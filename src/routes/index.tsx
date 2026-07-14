@@ -331,9 +331,9 @@ function Dashboard() {
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-center gap-3 mb-4">
-      <div className="w-1 h-6 rounded-full" style={{ background: "var(--gradient-primary)" }} />
-      <h2 className="text-lg font-bold uppercase tracking-[0.15em] text-foreground/90 font-display">{children}</h2>
+    <div className="flex items-center gap-2 mb-2">
+      <div className="w-0.5 h-4 rounded-full" style={{ background: "var(--gradient-primary)" }} />
+      <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-foreground/90 font-display">{children}</h2>
     </div>
   );
 }
@@ -341,28 +341,28 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 function MiniStat({ label, value, tone }: { label: string; value: string; tone?: "primary" | "destructive" }) {
   const color = tone === "destructive" ? "text-destructive" : tone === "primary" ? "text-primary" : "text-foreground";
   return (
-    <div className="glass-card rounded-2xl p-4">
-      <div className="text-[10px] uppercase tracking-widest text-muted-foreground mb-1">{label}</div>
-      <div className={`text-lg md:text-xl font-bold font-display ${color}`}>{value}</div>
+    <div className="glass-card rounded-2xl p-3">
+      <div className="text-[10px] uppercase tracking-widest text-muted-foreground mb-0.5">{label}</div>
+      <div className={`text-sm md:text-base font-bold font-display ${color}`}>{value}</div>
     </div>
   );
 }
 
 function BalanceInput({ icon, label, value, onChange }: { icon: React.ReactNode; label: string; value: number; onChange: (v: number) => void }) {
   return (
-    <label className="glass-card rounded-2xl p-4 flex items-center gap-3 hover:border-primary/30 transition-colors cursor-text group">
-      <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary/20 transition-colors">
+    <label className="glass-card rounded-2xl p-3 flex items-center gap-3 hover:border-primary/30 transition-colors cursor-text group">
+      <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary/20 transition-colors">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
         <div className="text-[10px] uppercase tracking-widest text-muted-foreground">{label}</div>
         <div className="flex items-baseline gap-1">
-          <span className="text-muted-foreground text-sm">€</span>
+          <span className="text-muted-foreground text-xs">€</span>
           <input
             type="number"
             value={value}
             onChange={(e) => onChange(Number(e.target.value) || 0)}
-            className="w-full bg-transparent text-xl font-bold font-display outline-none focus:text-primary"
+            className="w-full bg-transparent text-base font-bold font-display outline-none focus:text-primary"
           />
         </div>
       </div>
@@ -376,9 +376,9 @@ function AddIncomeRow({ onAdd, defaultDate }: { onAdd: (i: { source: string; amo
   const [date, setDate] = useState(defaultDate);
   return (
     <div className="flex flex-wrap items-center gap-2 px-4 py-3 bg-white/[0.02] border-t border-white/5">
-      <input placeholder="Fonte" value={source} onChange={(e) => setSource(e.target.value)} className="flex-1 min-w-[120px] bg-input/60 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/50" />
-      <input type="number" placeholder="€" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-24 bg-input/60 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/50" />
-      <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="bg-input/60 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/50" />
+      <input placeholder="Fonte" value={source} onChange={(e) => setSource(e.target.value)} className="flex-1 min-w-[120px] bg-input/60 rounded-lg px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-primary/50" />
+      <input type="number" placeholder="€" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-24 bg-input/60 rounded-lg px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-primary/50" />
+      <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="bg-input/60 rounded-lg px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-primary/50" />
       <button
         onClick={() => {
           const n = parseFloat(amount);
