@@ -414,14 +414,14 @@ function MovimentiTab({
   const sorted = [...transactions].sort((a, b) => b.date.localeCompare(a.date));
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-5 animate-fade-in">
       <section>
         <SectionTitle>Nuovo movimento</SectionTitle>
-        <div className="glass-card rounded-2xl p-5 grid grid-cols-2 md:grid-cols-5 gap-3">
-          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="bg-input/60 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/50 col-span-1" />
-          <input type="number" placeholder="Importo €" value={amount} onChange={(e) => setAmount(e.target.value)} className="bg-input/60 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/50 col-span-1" />
-          <input placeholder="Descrizione" value={description} onChange={(e) => setDescription(e.target.value)} className="bg-input/60 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/50 col-span-2" />
-          <select value={category} onChange={(e) => setCategory(e.target.value)} className="bg-input/60 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/50 col-span-2 md:col-span-1">
+        <div className="glass-card rounded-2xl p-4 grid grid-cols-2 md:grid-cols-5 gap-2">
+          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="bg-input/60 rounded-lg px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-primary/50 col-span-1" />
+          <input type="number" placeholder="Importo €" value={amount} onChange={(e) => setAmount(e.target.value)} className="bg-input/60 rounded-lg px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-primary/50 col-span-1" />
+          <input placeholder="Descrizione" value={description} onChange={(e) => setDescription(e.target.value)} className="bg-input/60 rounded-lg px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-primary/50 col-span-2" />
+          <select value={category} onChange={(e) => setCategory(e.target.value)} className="bg-input/60 rounded-lg px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-primary/50 col-span-2 md:col-span-1">
             {categories.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
           <button
@@ -432,10 +432,10 @@ function MovimentiTab({
                 setAmount(""); setDescription("");
               }
             }}
-            className="rounded-lg px-3 py-2.5 text-sm font-bold hover:opacity-90 col-span-2 md:col-span-5 flex items-center justify-center gap-2 shadow-lg shadow-primary/25 transition-opacity"
+            className="rounded-lg px-3 py-2 text-xs font-bold hover:opacity-90 col-span-2 md:col-span-5 flex items-center justify-center gap-2 shadow-lg shadow-primary/25 transition-opacity"
             style={{ background: "var(--gradient-primary)", color: "var(--color-primary-foreground)" }}
           >
-            <Plus className="w-4 h-4" /> Aggiungi movimento
+            <Plus className="w-3.5 h-3.5" /> Aggiungi movimento
           </button>
         </div>
       </section>
@@ -446,28 +446,28 @@ function MovimentiTab({
           {sorted.map((t) => (
             <div
               key={t.id}
-              className={`flex items-center gap-3 px-4 py-3 border-b border-white/5 last:border-0 transition-colors ${
+              className={`flex items-center gap-3 px-4 py-2.5 border-b border-white/5 last:border-0 transition-colors ${
                 t.highlight ? "bg-highlight/20 border-l-4 border-l-highlight" : "hover:bg-white/[0.03]"
               }`}
             >
-              <div className="flex flex-col items-center justify-center w-12 h-12 rounded-xl bg-white/5 flex-shrink-0">
-                <div className="text-[10px] text-muted-foreground uppercase">{t.date.slice(5, 7) === "07" ? "LUG" : t.date.slice(5, 7)}</div>
-                <div className="text-sm font-bold">{t.date.slice(8, 10)}</div>
+              <div className="flex flex-col items-center justify-center w-10 h-10 rounded-lg bg-white/5 flex-shrink-0">
+                <div className="text-[9px] text-muted-foreground uppercase">{t.date.slice(5, 7) === "07" ? "LUG" : t.date.slice(5, 7)}</div>
+                <div className="text-xs font-bold">{t.date.slice(8, 10)}</div>
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-medium truncate text-sm">{t.description || t.category}</div>
-                <span className="inline-block mt-0.5 text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-muted-foreground">{t.category}</span>
+                <div className="font-medium truncate text-xs">{t.description || t.category}</div>
+                <span className="inline-block mt-0.5 text-[9px] px-1.5 py-0.5 rounded-full bg-white/5 text-muted-foreground">{t.category}</span>
               </div>
               <div className="text-right">
-                <div className="font-bold text-destructive font-display">−{fmt(t.amount)}</div>
+                <div className="font-bold text-destructive font-display text-xs">−{fmt(t.amount)}</div>
               </div>
-              <button onClick={() => onDelete(t.id)} className="text-muted-foreground hover:text-destructive p-1.5 rounded-md hover:bg-destructive/10">
-                <Trash2 className="w-4 h-4" />
+              <button onClick={() => onDelete(t.id)} className="text-muted-foreground hover:text-destructive p-1 rounded-md hover:bg-destructive/10">
+                <Trash2 className="w-3.5 h-3.5" />
               </button>
             </div>
           ))}
           {sorted.length === 0 && (
-            <div className="p-10 text-center text-muted-foreground text-sm">Nessun movimento</div>
+            <div className="p-8 text-center text-muted-foreground text-xs">Nessun movimento</div>
           )}
         </div>
       </section>
