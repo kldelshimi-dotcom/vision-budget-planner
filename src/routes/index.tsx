@@ -67,113 +67,158 @@ function Dashboard() {
   }, [transactions, y, m]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground pb-24">
+    <div className="min-h-screen text-foreground pb-24 relative">
       {/* Header */}
-      <header className="border-b border-border/60 sticky top-0 z-20 bg-background/85 backdrop-blur-lg">
-        <div className="max-w-6xl mx-auto px-4 py-5">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-primary text-center">
+      <header className="sticky top-0 z-20 backdrop-blur-xl bg-background/70 border-b border-white/5">
+        <div className="max-w-6xl mx-auto px-5 pt-7 pb-4 flex flex-col items-center">
+          <div className="text-[10px] uppercase tracking-[0.35em] text-muted-foreground mb-1.5">Budget Tracker</div>
+          <h1 className="text-4xl md:text-5xl font-bold text-gradient text-center">
             {monthLabel}
           </h1>
         </div>
-        <nav className="max-w-6xl mx-auto px-4 flex gap-1 -mb-px">
-          {(["panoramica", "movimenti", "budget"] as const).map((t) => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`px-4 py-2.5 text-sm font-semibold capitalize border-b-2 transition-colors ${
-                tab === t
-                  ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {t}
-            </button>
-          ))}
+        <nav className="max-w-6xl mx-auto px-4 pb-2">
+          <div className="glass-card rounded-full p-1 flex gap-1">
+            {(["panoramica", "movimenti", "budget"] as const).map((t) => (
+              <button
+                key={t}
+                onClick={() => setTab(t)}
+                className={`flex-1 px-4 py-2 text-xs md:text-sm font-semibold capitalize rounded-full transition-all ${
+                  tab === t
+                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
         </nav>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-6 space-y-8">
+      <main className="max-w-6xl mx-auto px-4 py-6 space-y-10">
         {tab === "panoramica" && (
           <>
-            {/* GENERALE */}
+            {/* HERO SUMMARY */}
+            <section className="animate-fade-in">
+              <div className="glass-card rounded-3xl p-6 md:p-8 relative overflow-hidden">
+                <div className="absolute inset-0 opacity-60 pointer-events-none" style={{ background: "var(--gradient-glow)" }} />
+                <div className="relative">
+                  <div className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-2">Rimanente questo mese</div>
+                  <div className="flex items-baseline gap-3 flex-wrap">
+                    <div className="text-5xl md:text-6xl font-bold text-gradient font-display">{fmt(remaining)}</div>
+                    <div className="text-sm text-muted-foreground">
+                      su <span className="text-foreground/80 font-semibold">{fmt(totalBudget)}</span>
+                    </div>
+                  </div>
+                  <div className="mt-5 h-2 rounded-full bg-white/5 overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all"
+                      style={{
+                        width: `${Math.min(100, totalBudget ? (totalSpent / totalBudget) * 100 : 0)}%`,
+                        background: "var(--gradient-primary)",
+                      }}
+                    />
+                  </div>
+                  <div className="mt-3 flex justify-between text-xs text-muted-foreground">
+                    <span>Speso <span className="text-destructive font-semibold">{fmt(totalSpent)}</span></span>
+                    <span>{totalBudget ? ((totalSpent / totalBudget) * 100).toFixed(1) : 0}%</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3 mt-4">
+                <MiniStat label="Budget" value={fmt(totalBudget)} />
+                <MiniStat label="Speso" value={fmt(totalSpent)} tone="destructive" />
+                <MiniStat label="Entrate" value={fmt(totalIncome)} tone="primary" />
+              </div>
+            </section>
+
+            {/* WALLETS */}
             <section>
-              <SectionTitle>Generale</SectionTitle>
+              <SectionTitle>Portafoglio</SectionTitle>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <StatCard label="Budget" value={fmt(totalBudget)} pct="100,00%" />
-                <StatCard label="Speso" value={fmt(totalSpent)} pct={totalBudget ? `${((totalSpent / totalBudget) * 100).toFixed(2)}%` : "0%"} accent="destructive" />
-                <StatCard label="Rimanente" value={fmt(remaining)} pct={totalBudget ? `${((remaining / totalBudget) * 100).toFixed(2)}%` : "0%"} accent="primary" />
+                <BalanceInput icon={<Wallet className="w-5 h-5" />} label="Contanti" value={cashOnHand} onChange={(v) => setBalances({ cashOnHand: v })} />
+                <BalanceInput icon={<Landmark className="w-5 h-5" />} label="In banca" value={bank} onChange={(v) => setBalances({ bank: v })} />
+                <BalanceInput icon={<TrendingDown className="w-5 h-5" />} label="Soldi in meno" value={owed} onChange={(v) => setBalances({ owed: v })} />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3">
-                <BalanceInput icon={<Wallet className="w-4 h-4" />} label="Contanti" value={cashOnHand} onChange={(v) => setBalances({ cashOnHand: v })} />
-                <BalanceInput icon={<Landmark className="w-4 h-4" />} label="In banca" value={bank} onChange={(v) => setBalances({ bank: v })} />
-                <BalanceInput icon={<TrendingDown className="w-4 h-4" />} label="Soldi in meno" value={owed} onChange={(v) => setBalances({ owed: v })} />
-              </div>
-
-              <div className="mt-3 rounded-xl border border-border bg-card/60 p-4 flex items-center gap-3">
-                <Vault className="w-5 h-5 text-primary" />
-                <span className="text-sm text-muted-foreground">Totale disponibile</span>
-                <span className="ml-auto font-semibold text-lg text-primary">{fmt(cashOnHand + bank - owed)}</span>
+              <div className="mt-4 glass-card rounded-2xl p-5 flex items-center gap-4">
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: "var(--gradient-primary)" }}>
+                  <Vault className="w-5 h-5 text-primary-foreground" />
+                </div>
+                <div>
+                  <div className="text-xs uppercase tracking-wider text-muted-foreground">Totale disponibile</div>
+                  <div className="text-2xl font-bold text-gradient">{fmt(cashOnHand + bank - owed)}</div>
+                </div>
               </div>
             </section>
 
             {/* ENTRATE */}
             <section>
               <SectionTitle>Entrate</SectionTitle>
-              <div className="rounded-xl border border-border bg-card overflow-hidden">
+              <div className="glass-card rounded-2xl overflow-hidden">
                 {incomes.map((i) => (
-                  <div key={i.id} className="flex items-center gap-3 px-4 py-3 border-b border-border/60 last:border-0">
+                  <div key={i.id} className="flex items-center gap-3 px-5 py-4 border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors">
+                    <div className="w-9 h-9 rounded-lg bg-primary/15 text-primary flex items-center justify-center text-xs font-bold">
+                      +
+                    </div>
                     <div className="flex-1">
                       <div className="font-medium">{i.source}</div>
                       <div className="text-xs text-muted-foreground">{i.date}</div>
                     </div>
-                    <div className="font-semibold text-primary">{fmt(i.amount)}</div>
-                    <button onClick={() => deleteIncome(i.id)} className="text-muted-foreground hover:text-destructive p-1">
+                    <div className="font-bold text-primary text-lg">{fmt(i.amount)}</div>
+                    <button onClick={() => deleteIncome(i.id)} className="text-muted-foreground hover:text-destructive p-1.5 rounded-md hover:bg-destructive/10">
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                 ))}
                 <AddIncomeRow onAdd={addIncome} defaultDate={`${month}-01`} />
-                <div className="flex items-center px-4 py-3 bg-accent/30 border-t border-border">
-                  <span className="font-semibold">Totale</span>
-                  <span className="ml-auto font-bold text-primary">{fmt(totalIncome)}</span>
+                <div className="flex items-center px-5 py-4 border-t border-white/5" style={{ background: "linear-gradient(90deg, transparent, oklch(0.88 0.22 140 / 0.08))" }}>
+                  <span className="font-semibold text-sm uppercase tracking-wider text-muted-foreground">Totale</span>
+                  <span className="ml-auto font-bold text-primary text-xl">{fmt(totalIncome)}</span>
                 </div>
               </div>
             </section>
 
             {/* BUDGET DONUT */}
             <section>
-              <SectionTitle>Budget per categoria</SectionTitle>
-              <div className="rounded-xl border border-border bg-card p-4">
-                <div className="h-72">
+              <SectionTitle>Distribuzione budget</SectionTitle>
+              <div className="glass-card rounded-2xl p-5">
+                <div className="h-80 relative">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10">
+                    <div className="text-xs uppercase tracking-wider text-muted-foreground">Totale</div>
+                    <div className="text-2xl font-bold text-gradient">{fmt(totalBudget)}</div>
+                    <div className="text-xs text-muted-foreground mt-1">{categories.length} categorie</div>
+                  </div>
                   <ResponsiveContainer>
                     <PieChart>
                       <Pie
                         data={donutData}
                         dataKey="value"
                         nameKey="name"
-                        innerRadius={60}
-                        outerRadius={110}
-                        paddingAngle={1}
-                        stroke="none"
+                        innerRadius={80}
+                        outerRadius={130}
+                        paddingAngle={2}
+                        stroke="oklch(0.14 0.015 160)"
+                        strokeWidth={2}
                       >
                         {donutData.map((d) => (
                           <Cell key={d.name} fill={d.color} />
                         ))}
                       </Pie>
                       <Tooltip
-                        contentStyle={{ background: "oklch(0.2 0.015 160)", border: "1px solid oklch(0.28 0.015 160)", borderRadius: 8 }}
+                        contentStyle={{ background: "oklch(0.19 0.02 165)", border: "1px solid oklch(0.28 0.02 160)", borderRadius: 12, backdropFilter: "blur(10px)" }}
                         formatter={(v: number, n) => [fmt(v), n]}
                       />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-3">
                   {donutData.map((d) => (
-                    <div key={d.name} className="flex items-center gap-2 text-xs">
-                      <span className="w-3 h-3 rounded-sm" style={{ background: d.color }} />
+                    <div key={d.name} className="flex items-center gap-2 text-xs px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors">
+                      <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: d.color, boxShadow: `0 0 8px ${d.color}80` }} />
                       <span className="text-muted-foreground truncate">{d.name}</span>
-                      <span className="ml-auto text-foreground/80">
+                      <span className="ml-auto text-foreground/90 font-semibold">
                         {((d.value / totalBudget) * 100).toFixed(1)}%
                       </span>
                     </div>
@@ -185,42 +230,65 @@ function Dashboard() {
             {/* MACRO GROUPS */}
             <section>
               <SectionTitle>Macro categorie</SectionTitle>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {groupTotals.map((g) => (
-                  <div key={g.group} className="rounded-xl border border-border bg-card p-4">
-                    <div className="flex items-baseline justify-between mb-2">
-                      <div className="font-semibold">{g.group}</div>
-                      <div className="text-xs text-muted-foreground">{g.pct.toFixed(2)}%</div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {groupTotals.map((g) => {
+                  const pct = g.budget ? (g.spent / g.budget) * 100 : 0;
+                  const over = g.spent > g.budget;
+                  return (
+                    <div key={g.group} className="glass-card rounded-2xl p-5 relative overflow-hidden group">
+                      <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full opacity-10 blur-2xl group-hover:opacity-20 transition-opacity" style={{ background: "var(--gradient-primary)" }} />
+                      <div className="relative">
+                        <div className="flex items-start justify-between mb-3">
+                          <div>
+                            <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">{g.group}</div>
+                            <div className="text-3xl font-bold text-gradient font-display">{fmt(g.budget)}</div>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-xs text-muted-foreground">del totale</div>
+                            <div className="text-sm font-semibold text-foreground/80">{g.pct.toFixed(1)}%</div>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between text-xs mb-2">
+                          <span className="text-muted-foreground">Speso</span>
+                          <span className={over ? "text-destructive font-semibold" : "text-foreground/80 font-semibold"}>{fmt(g.spent)}</span>
+                        </div>
+                        <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all"
+                            style={{
+                              width: `${Math.min(100, pct)}%`,
+                              background: over ? "var(--color-destructive)" : "var(--gradient-primary)",
+                            }}
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex items-baseline justify-between mb-3">
-                      <span className="text-2xl font-bold text-primary">{fmt(g.budget)}</span>
-                      <span className="text-sm text-muted-foreground">Speso {fmt(g.spent)}</span>
-                    </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-primary transition-all"
-                        style={{ width: `${Math.min(100, g.budget ? (g.spent / g.budget) * 100 : 0)}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </section>
 
             {/* DAILY CHART */}
             <section>
               <SectionTitle>Spese giornaliere</SectionTitle>
-              <div className="rounded-xl border border-border bg-card p-4 h-72">
+              <div className="glass-card rounded-2xl p-5 h-80">
                 <ResponsiveContainer>
                   <BarChart data={dailyData} margin={{ top: 10, right: 10, left: -10, bottom: 30 }}>
-                    <CartesianGrid stroke="oklch(0.24 0.015 160)" vertical={false} />
-                    <XAxis dataKey="day" tick={{ fill: "oklch(0.7 0.02 160)", fontSize: 10 }} angle={-45} textAnchor="end" interval={1} />
-                    <YAxis tick={{ fill: "oklch(0.7 0.02 160)", fontSize: 10 }} tickFormatter={(v) => `€${v}`} />
+                    <defs>
+                      <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="oklch(0.95 0.24 135)" stopOpacity={1} />
+                        <stop offset="100%" stopColor="oklch(0.6 0.18 155)" stopOpacity={0.7} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid stroke="oklch(1 0 0 / 0.05)" vertical={false} />
+                    <XAxis dataKey="day" tick={{ fill: "oklch(0.68 0.02 160)", fontSize: 10 }} angle={-45} textAnchor="end" interval={1} axisLine={false} tickLine={false} />
+                    <YAxis tick={{ fill: "oklch(0.68 0.02 160)", fontSize: 10 }} tickFormatter={(v) => `€${v}`} axisLine={false} tickLine={false} />
                     <Tooltip
-                      contentStyle={{ background: "oklch(0.2 0.015 160)", border: "1px solid oklch(0.28 0.015 160)", borderRadius: 8 }}
+                      cursor={{ fill: "oklch(1 0 0 / 0.05)" }}
+                      contentStyle={{ background: "oklch(0.19 0.02 165)", border: "1px solid oklch(0.28 0.02 160)", borderRadius: 12 }}
                       formatter={(v: number) => [fmt(v), "Speso"]}
                     />
-                    <Bar dataKey="amount" fill="oklch(0.6 0.15 145)" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="amount" fill="url(#barGrad)" radius={[6, 6, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
