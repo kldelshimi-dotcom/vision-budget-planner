@@ -147,19 +147,19 @@ function Dashboard() {
             {/* WALLETS */}
             <section>
               <SectionTitle>Portafoglio</SectionTitle>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <BalanceInput icon={<Wallet className="w-5 h-5" />} label="Contanti" value={cashOnHand} onChange={(v) => setBalances({ cashOnHand: v })} />
-                <BalanceInput icon={<Landmark className="w-5 h-5" />} label="In banca" value={bank} onChange={(v) => setBalances({ bank: v })} />
-                <BalanceInput icon={<TrendingDown className="w-5 h-5" />} label="Soldi in meno" value={owed} onChange={(v) => setBalances({ owed: v })} />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                <BalanceInput icon={<Wallet className="w-4 h-4" />} label="Contanti" value={cashOnHand} onChange={(v) => setBalances({ cashOnHand: v })} />
+                <BalanceInput icon={<Landmark className="w-4 h-4" />} label="In banca" value={bank} onChange={(v) => setBalances({ bank: v })} />
+                <BalanceInput icon={<TrendingDown className="w-4 h-4" />} label="Soldi in meno" value={owed} onChange={(v) => setBalances({ owed: v })} />
               </div>
 
-              <div className="mt-4 glass-card rounded-2xl p-5 flex items-center gap-4">
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: "var(--gradient-primary)" }}>
-                  <Vault className="w-5 h-5 text-primary-foreground" />
+              <div className="mt-3 glass-card rounded-2xl p-4 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "var(--gradient-primary)" }}>
+                  <Vault className="w-4 h-4 text-primary-foreground" />
                 </div>
                 <div>
-                  <div className="text-xs uppercase tracking-wider text-muted-foreground">Totale disponibile</div>
-                  <div className="text-2xl font-bold text-gradient">{fmt(cashOnHand + bank - owed)}</div>
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Totale disponibile</div>
+                  <div className="text-xl font-bold text-gradient">{fmt(cashOnHand + bank - owed)}</div>
                 </div>
               </div>
             </section>
@@ -169,24 +169,24 @@ function Dashboard() {
               <SectionTitle>Entrate</SectionTitle>
               <div className="glass-card rounded-2xl overflow-hidden">
                 {incomes.map((i) => (
-                  <div key={i.id} className="flex items-center gap-3 px-5 py-4 border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors">
-                    <div className="w-9 h-9 rounded-lg bg-primary/15 text-primary flex items-center justify-center text-xs font-bold">
+                  <div key={i.id} className="flex items-center gap-3 px-4 py-3 border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors">
+                    <div className="w-8 h-8 rounded-lg bg-primary/15 text-primary flex items-center justify-center text-xs font-bold">
                       +
                     </div>
                     <div className="flex-1">
-                      <div className="font-medium">{i.source}</div>
-                      <div className="text-xs text-muted-foreground">{i.date}</div>
+                      <div className="text-sm font-medium">{i.source}</div>
+                      <div className="text-[10px] text-muted-foreground">{i.date}</div>
                     </div>
-                    <div className="font-bold text-primary text-lg">{fmt(i.amount)}</div>
-                    <button onClick={() => deleteIncome(i.id)} className="text-muted-foreground hover:text-destructive p-1.5 rounded-md hover:bg-destructive/10">
-                      <Trash2 className="w-4 h-4" />
+                    <div className="font-bold text-primary text-sm">{fmt(i.amount)}</div>
+                    <button onClick={() => deleteIncome(i.id)} className="text-muted-foreground hover:text-destructive p-1 rounded-md hover:bg-destructive/10">
+                      <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 ))}
                 <AddIncomeRow onAdd={addIncome} defaultDate={`${month}-01`} />
-                <div className="flex items-center px-5 py-4 border-t border-white/5" style={{ background: "linear-gradient(90deg, transparent, oklch(0.88 0.22 140 / 0.08))" }}>
-                  <span className="font-semibold text-sm uppercase tracking-wider text-muted-foreground">Totale</span>
-                  <span className="ml-auto font-bold text-primary text-xl">{fmt(totalIncome)}</span>
+                <div className="flex items-center px-4 py-3 border-t border-white/5" style={{ background: "linear-gradient(90deg, transparent, oklch(0.88 0.22 140 / 0.08))" }}>
+                  <span className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Totale</span>
+                  <span className="ml-auto font-bold text-primary text-base">{fmt(totalIncome)}</span>
                 </div>
               </div>
             </section>
