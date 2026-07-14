@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 import { Plus, Wallet, Landmark, TrendingDown, Trash2, Vault } from "lucide-react";
 import { useBudget } from "@/lib/budget-store";
-import type { MacroGroup } from "@/lib/budget-data";
+import type { MacroGroup, Category, Transaction } from "@/lib/budget-data";
 
 export const Route = createFileRoute("/")({
   component: Dashboard,
