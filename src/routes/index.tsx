@@ -194,12 +194,12 @@ function Dashboard() {
             {/* BUDGET DONUT */}
             <section>
               <SectionTitle>Distribuzione budget</SectionTitle>
-              <div className="glass-card rounded-2xl p-5">
-                <div className="h-80 relative">
+              <div className="glass-card rounded-2xl p-4">
+                <div className="h-64 relative">
                   <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10">
-                    <div className="text-xs uppercase tracking-wider text-muted-foreground">Totale</div>
-                    <div className="text-2xl font-bold text-gradient">{fmt(totalBudget)}</div>
-                    <div className="text-xs text-muted-foreground mt-1">{categories.length} categorie</div>
+                    <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Totale</div>
+                    <div className="text-xl font-bold text-gradient">{fmt(totalBudget)}</div>
+                    <div className="text-[10px] text-muted-foreground mt-0.5">{categories.length} categorie</div>
                   </div>
                   <ResponsiveContainer>
                     <PieChart>
@@ -207,8 +207,8 @@ function Dashboard() {
                         data={donutData}
                         dataKey="value"
                         nameKey="name"
-                        innerRadius={80}
-                        outerRadius={130}
+                        innerRadius={70}
+                        outerRadius={110}
                         paddingAngle={2}
                         stroke="oklch(0.14 0.015 160)"
                         strokeWidth={2}
@@ -224,10 +224,10 @@ function Dashboard() {
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-3">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2">
                   {donutData.map((d) => (
-                    <div key={d.name} className="flex items-center gap-2 text-xs px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors">
-                      <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: d.color, boxShadow: `0 0 8px ${d.color}80` }} />
+                    <div key={d.name} className="flex items-center gap-2 text-[10px] px-2 py-1 rounded-lg hover:bg-white/5 transition-colors">
+                      <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: d.color, boxShadow: `0 0 6px ${d.color}80` }} />
                       <span className="text-muted-foreground truncate">{d.name}</span>
                       <span className="ml-auto text-foreground/90 font-semibold">
                         {((d.value / totalBudget) * 100).toFixed(1)}%
@@ -241,29 +241,29 @@ function Dashboard() {
             {/* MACRO GROUPS */}
             <section>
               <SectionTitle>Macro categorie</SectionTitle>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {groupTotals.map((g) => {
                   const pct = g.budget ? (g.spent / g.budget) * 100 : 0;
                   const over = g.spent > g.budget;
                   return (
-                    <div key={g.group} className="glass-card rounded-2xl p-5 relative overflow-hidden group">
+                    <div key={g.group} className="glass-card rounded-2xl p-4 relative overflow-hidden group">
                       <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full opacity-10 blur-2xl group-hover:opacity-20 transition-opacity" style={{ background: "var(--gradient-primary)" }} />
                       <div className="relative">
-                        <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-start justify-between mb-2">
                           <div>
-                            <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">{g.group}</div>
-                            <div className="text-3xl font-bold text-gradient font-display">{fmt(g.budget)}</div>
+                            <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">{g.group}</div>
+                            <div className="text-xl font-bold text-gradient font-display">{fmt(g.budget)}</div>
                           </div>
                           <div className="text-right">
-                            <div className="text-xs text-muted-foreground">del totale</div>
-                            <div className="text-sm font-semibold text-foreground/80">{g.pct.toFixed(1)}%</div>
+                            <div className="text-[10px] text-muted-foreground">del totale</div>
+                            <div className="text-xs font-semibold text-foreground/80">{g.pct.toFixed(1)}%</div>
                           </div>
                         </div>
-                        <div className="flex items-center justify-between text-xs mb-2">
+                        <div className="flex items-center justify-between text-[10px] mb-1.5">
                           <span className="text-muted-foreground">Speso</span>
                           <span className={over ? "text-destructive font-semibold" : "text-foreground/80 font-semibold"}>{fmt(g.spent)}</span>
                         </div>
-                        <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                        <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
                           <div
                             className="h-full rounded-full transition-all"
                             style={{
@@ -282,7 +282,7 @@ function Dashboard() {
             {/* DAILY CHART */}
             <section>
               <SectionTitle>Spese giornaliere</SectionTitle>
-              <div className="glass-card rounded-2xl p-5 h-80">
+              <div className="glass-card rounded-2xl p-4 h-64">
                 <ResponsiveContainer>
                   <BarChart data={dailyData} margin={{ top: 10, right: 10, left: -10, bottom: 30 }}>
                     <defs>
@@ -292,14 +292,14 @@ function Dashboard() {
                       </linearGradient>
                     </defs>
                     <CartesianGrid stroke="oklch(1 0 0 / 0.05)" vertical={false} />
-                    <XAxis dataKey="day" tick={{ fill: "oklch(0.68 0.02 160)", fontSize: 10 }} angle={-45} textAnchor="end" interval={1} axisLine={false} tickLine={false} />
-                    <YAxis tick={{ fill: "oklch(0.68 0.02 160)", fontSize: 10 }} tickFormatter={(v) => `€${v}`} axisLine={false} tickLine={false} />
+                    <XAxis dataKey="day" tick={{ fill: "oklch(0.68 0.02 160)", fontSize: 9 }} angle={-45} textAnchor="end" interval={1} axisLine={false} tickLine={false} />
+                    <YAxis tick={{ fill: "oklch(0.68 0.02 160)", fontSize: 9 }} tickFormatter={(v) => `€${v}`} axisLine={false} tickLine={false} />
                     <Tooltip
                       cursor={{ fill: "oklch(1 0 0 / 0.05)" }}
                       contentStyle={{ background: "oklch(0.19 0.02 165)", border: "1px solid oklch(0.28 0.02 160)", borderRadius: 12 }}
                       formatter={(v: number) => [fmt(v), "Speso"]}
                     />
-                    <Bar dataKey="amount" fill="url(#barGrad)" radius={[6, 6, 0, 0]} />
+                    <Bar dataKey="amount" fill="url(#barGrad)" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
