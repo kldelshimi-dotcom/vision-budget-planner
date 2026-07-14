@@ -320,33 +320,40 @@ function Dashboard() {
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-xl font-bold text-primary uppercase tracking-wide mb-3">{children}</h2>
+    <div className="flex items-center gap-3 mb-4">
+      <div className="w-1 h-6 rounded-full" style={{ background: "var(--gradient-primary)" }} />
+      <h2 className="text-lg font-bold uppercase tracking-[0.15em] text-foreground/90 font-display">{children}</h2>
+    </div>
   );
 }
 
-function StatCard({ label, value, pct, accent }: { label: string; value: string; pct: string; accent?: "primary" | "destructive" }) {
-  const color = accent === "destructive" ? "text-destructive" : accent === "primary" ? "text-primary" : "text-foreground";
+function MiniStat({ label, value, tone }: { label: string; value: string; tone?: "primary" | "destructive" }) {
+  const color = tone === "destructive" ? "text-destructive" : tone === "primary" ? "text-primary" : "text-foreground";
   return (
-    <div className="rounded-xl border border-border bg-card p-4">
-      <div className="text-xs uppercase tracking-wide text-muted-foreground">{label}</div>
-      <div className={`text-2xl font-bold mt-1 ${color}`}>{value}</div>
-      <div className="text-xs text-muted-foreground italic mt-1">{pct}</div>
+    <div className="glass-card rounded-2xl p-4">
+      <div className="text-[10px] uppercase tracking-widest text-muted-foreground mb-1">{label}</div>
+      <div className={`text-lg md:text-xl font-bold font-display ${color}`}>{value}</div>
     </div>
   );
 }
 
 function BalanceInput({ icon, label, value, onChange }: { icon: React.ReactNode; label: string; value: number; onChange: (v: number) => void }) {
   return (
-    <label className="rounded-xl border border-border bg-card p-4 flex items-center gap-3">
-      <div className="w-9 h-9 rounded-lg bg-accent/40 flex items-center justify-center text-primary">{icon}</div>
+    <label className="glass-card rounded-2xl p-4 flex items-center gap-3 hover:border-primary/30 transition-colors cursor-text group">
+      <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary/20 transition-colors">
+        {icon}
+      </div>
       <div className="flex-1 min-w-0">
-        <div className="text-xs text-muted-foreground">{label}</div>
-        <input
-          type="number"
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value) || 0)}
-          className="w-full bg-transparent text-lg font-semibold outline-none focus:text-primary"
-        />
+        <div className="text-[10px] uppercase tracking-widest text-muted-foreground">{label}</div>
+        <div className="flex items-baseline gap-1">
+          <span className="text-muted-foreground text-sm">€</span>
+          <input
+            type="number"
+            value={value}
+            onChange={(e) => onChange(Number(e.target.value) || 0)}
+            className="w-full bg-transparent text-xl font-bold font-display outline-none focus:text-primary"
+          />
+        </div>
       </div>
     </label>
   );
@@ -357,10 +364,10 @@ function AddIncomeRow({ onAdd, defaultDate }: { onAdd: (i: { source: string; amo
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState(defaultDate);
   return (
-    <div className="flex items-center gap-2 px-3 py-2 bg-accent/20">
-      <input placeholder="Fonte" value={source} onChange={(e) => setSource(e.target.value)} className="flex-1 bg-input rounded px-2 py-1.5 text-sm outline-none focus:ring-1 focus:ring-primary" />
-      <input type="number" placeholder="€" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-24 bg-input rounded px-2 py-1.5 text-sm outline-none focus:ring-1 focus:ring-primary" />
-      <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="bg-input rounded px-2 py-1.5 text-sm outline-none focus:ring-1 focus:ring-primary" />
+    <div className="flex flex-wrap items-center gap-2 px-4 py-3 bg-white/[0.02] border-t border-white/5">
+      <input placeholder="Fonte" value={source} onChange={(e) => setSource(e.target.value)} className="flex-1 min-w-[120px] bg-input/60 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/50" />
+      <input type="number" placeholder="€" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-24 bg-input/60 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/50" />
+      <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="bg-input/60 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/50" />
       <button
         onClick={() => {
           const n = parseFloat(amount);
@@ -369,7 +376,8 @@ function AddIncomeRow({ onAdd, defaultDate }: { onAdd: (i: { source: string; amo
             setSource(""); setAmount("");
           }
         }}
-        className="bg-primary text-primary-foreground rounded p-1.5 hover:opacity-90"
+        className="rounded-lg p-2 hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
+        style={{ background: "var(--gradient-primary)", color: "var(--color-primary-foreground)" }}
         aria-label="Aggiungi entrata"
       >
         <Plus className="w-4 h-4" />
