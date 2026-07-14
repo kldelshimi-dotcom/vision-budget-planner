@@ -71,9 +71,9 @@ function Dashboard() {
     <div className="min-h-screen text-foreground pb-24 relative">
       {/* Header */}
       <header className="sticky top-0 z-20 backdrop-blur-xl bg-background/70 border-b border-white/5">
-        <div className="max-w-6xl mx-auto px-5 pt-7 pb-4 flex flex-col items-center">
-          <div className="text-[10px] uppercase tracking-[0.35em] text-muted-foreground mb-1.5">Budget Tracker</div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gradient text-center">
+        <div className="max-w-6xl mx-auto px-5 pt-5 pb-3 flex flex-col items-center">
+          <div className="text-[10px] uppercase tracking-[0.35em] text-muted-foreground mb-1">Budget Tracker</div>
+          <h1 className="text-2xl md:text-3xl font-bold text-gradient text-center">
             {monthLabel}
           </h1>
         </div>
@@ -83,7 +83,7 @@ function Dashboard() {
               <button
                 key={t}
                 onClick={() => setTab(t)}
-                className={`flex-1 px-4 py-2 text-xs md:text-sm font-semibold capitalize rounded-full transition-all ${
+                className={`flex-1 px-3 py-1.5 text-[10px] md:text-xs font-semibold capitalize rounded-full transition-all ${
                   tab === t
                     ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
                     : "text-muted-foreground hover:text-foreground"
@@ -96,32 +96,32 @@ function Dashboard() {
         </nav>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-6 space-y-10">
+      <main className="max-w-6xl mx-auto px-4 py-4 space-y-6">
         {tab === "panoramica" && (
           <>
             {/* HERO SUMMARY */}
             <section className="animate-fade-in">
-              <div className="glass-card rounded-3xl p-6 md:p-8 relative overflow-hidden">
+              <div className="glass-card rounded-3xl p-4 md:p-6 relative overflow-hidden">
                 <div className="absolute inset-0 opacity-60 pointer-events-none" style={{ background: "var(--gradient-glow)" }} />
                 <div className="relative">
-                  <div className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-2">Rimanente questo mese</div>
-                  <div className="flex items-baseline gap-3 flex-wrap">
-                    <div className="text-5xl md:text-6xl font-bold text-gradient font-display">
+                  <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-1">Rimanente questo mese</div>
+                  <div className="flex items-baseline gap-2 flex-wrap">
+                    <div className="text-3xl md:text-4xl font-bold text-gradient font-display">
                       {hideAmount ? "€ ••••••••" : fmt(remaining)}
                     </div>
                     <button
                       onClick={() => setHideAmount((v) => !v)}
                       aria-label={hideAmount ? "Mostra saldo" : "Nascondi saldo"}
                       aria-pressed={hideAmount}
-                      className="p-2 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      className="p-1.5 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
                     >
-                      {hideAmount ? <EyeOff className="w-6 h-6" /> : <Eye className="w-6 h-6" />}
+                      {hideAmount ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-xs text-muted-foreground">
                       su <span className="text-foreground/80 font-semibold">{fmt(totalBudget)}</span>
                     </div>
                   </div>
-                  <div className="mt-5 h-2 rounded-full bg-white/5 overflow-hidden">
+                  <div className="mt-3 h-1.5 rounded-full bg-white/5 overflow-hidden">
                     <div
                       className="h-full rounded-full transition-all"
                       style={{
@@ -130,14 +130,14 @@ function Dashboard() {
                       }}
                     />
                   </div>
-                  <div className="mt-3 flex justify-between text-xs text-muted-foreground">
+                  <div className="mt-2 flex justify-between text-[10px] text-muted-foreground">
                     <span>Speso <span className="text-destructive font-semibold">{fmt(totalSpent)}</span></span>
                     <span>{totalBudget ? ((totalSpent / totalBudget) * 100).toFixed(1) : 0}%</span>
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-3 mt-4">
+              <div className="grid grid-cols-3 gap-2 mt-3">
                 <MiniStat label="Budget" value={fmt(totalBudget)} />
                 <MiniStat label="Speso" value={fmt(totalSpent)} tone="destructive" />
                 <MiniStat label="Entrate" value={fmt(totalIncome)} tone="primary" />
