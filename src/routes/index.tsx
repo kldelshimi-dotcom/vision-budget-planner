@@ -313,7 +313,7 @@ function AddIncomeRow({ onAdd, defaultDate }: { onAdd: (i: { source: string; amo
 function MovimentiTab({
   transactions, categories, onAdd, onDelete, defaultDate,
 }: {
-  transactions: ReturnType<typeof useBudget>["transactions"];
+  transactions: Transaction[];
   categories: string[];
   onAdd: (t: { date: string; amount: number; description: string; category: string; note?: string }) => void;
   onDelete: (id: string) => void;
@@ -390,7 +390,7 @@ function MovimentiTab({
 function BudgetTab({
   categories, spentByCat, onUpdate,
 }: {
-  categories: ReturnType<typeof useBudget>["categories"];
+  categories: Category[];
   spentByCat: Map<string, number>;
   onUpdate: (name: string, budget: number) => void;
 }) {
