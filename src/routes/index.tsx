@@ -483,7 +483,7 @@ function BudgetTab({
   onUpdate: (name: string, budget: number) => void;
 }) {
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-6 animate-fade-in">
       {GROUPS.map((g) => {
         const cats = categories.filter((c) => c.group === g);
         const budget = cats.reduce((s, c) => s + c.budget, 0);
@@ -491,14 +491,14 @@ function BudgetTab({
         const groupPct = budget ? (spent / budget) * 100 : 0;
         return (
           <section key={g}>
-            <div className="flex items-end justify-between mb-4">
+            <div className="flex items-end justify-between mb-2">
               <div>
-                <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-1">Gruppo</div>
-                <h2 className="text-2xl font-bold font-display text-gradient">{g}</h2>
+                <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-0.5">Gruppo</div>
+                <h2 className="text-xl font-bold font-display text-gradient">{g}</h2>
               </div>
               <div className="text-right">
-                <div className="text-xs text-muted-foreground">Speso / Budget</div>
-                <div className="text-sm">
+                <div className="text-[10px] text-muted-foreground">Speso / Budget</div>
+                <div className="text-xs">
                   <span className="text-foreground font-bold">{fmt(spent)}</span>
                   <span className="text-muted-foreground"> / {fmt(budget)}</span>
                 </div>
@@ -514,26 +514,26 @@ function BudgetTab({
                 const pct = c.budget ? Math.min(100, (s / c.budget) * 100) : 0;
                 const over = s > c.budget;
                 return (
-                  <div key={c.name} className="px-4 py-4 border-b border-white/5 last:border-0 hover:bg-white/[0.03] transition-colors">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="w-8 h-8 rounded-lg flex-shrink-0" style={{ background: c.color, boxShadow: `0 0 12px ${c.color}60` }} />
+                  <div key={c.name} className="px-4 py-3 border-b border-white/5 last:border-0 hover:bg-white/[0.03] transition-colors">
+                    <div className="flex items-center gap-3 mb-1.5">
+                      <span className="w-7 h-7 rounded-lg flex-shrink-0" style={{ background: c.color, boxShadow: `0 0 10px ${c.color}60` }} />
                       <div className="flex-1 min-w-0">
-                        <div className="font-semibold truncate">{c.name}</div>
-                        <div className="text-xs text-muted-foreground">
+                        <div className="font-semibold truncate text-sm">{c.name}</div>
+                        <div className="text-[10px] text-muted-foreground">
                           {fmt(s)} spesi · <span className={over ? "text-destructive" : "text-primary"}>{over ? "Sforato" : `${fmt(diff)} rimasti`}</span>
                         </div>
                       </div>
                       <div className="flex items-center gap-1 bg-input/50 rounded-lg px-2 py-1">
-                        <span className="text-xs text-muted-foreground">€</span>
+                        <span className="text-[10px] text-muted-foreground">€</span>
                         <input
                           type="number"
                           value={c.budget}
                           onChange={(e) => onUpdate(c.name, Number(e.target.value) || 0)}
-                          className="w-16 bg-transparent text-sm font-bold text-right outline-none focus:text-primary"
+                          className="w-14 bg-transparent text-xs font-bold text-right outline-none focus:text-primary"
                         />
                       </div>
                     </div>
-                    <div className="h-1.5 bg-white/5 rounded-full overflow-hidden ml-11">
+                    <div className="h-1 bg-white/5 rounded-full overflow-hidden ml-10">
                       <div
                         className="h-full rounded-full transition-all"
                         style={{
