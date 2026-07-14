@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
-import { Plus, Wallet, Landmark, TrendingDown, Trash2, Vault } from "lucide-react";
+import { Plus, Wallet, Landmark, TrendingDown, Trash2, Vault, Eye, EyeOff } from "lucide-react";
 import { useBudget } from "@/lib/budget-store";
 import type { MacroGroup, Category, Transaction } from "@/lib/budget-data";
 
@@ -28,6 +28,7 @@ function Dashboard() {
   } = useBudget();
 
   const [tab, setTab] = useState<"panoramica" | "movimenti" | "budget">("panoramica");
+  const [hideAmount, setHideAmount] = useState(false);
 
   const [y, m] = month.split("-").map(Number);
   const monthLabel = `${MONTHS_IT[m - 1]} ${y}`;
@@ -105,7 +106,17 @@ function Dashboard() {
                 <div className="relative">
                   <div className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-2">Rimanente questo mese</div>
                   <div className="flex items-baseline gap-3 flex-wrap">
-                    <div className="text-5xl md:text-6xl font-bold text-gradient font-display">{fmt(remaining)}</div>
+                    <div className="text-5xl md:text-6xl font-bold text-gradient font-display">
+                      {hideAmount ? "€ ••••••••" : fmt(remaining)}
+                    </div>
+                    <button
+                      onClick={() => setHideAmount((v) => !v)}
+                      aria-label={hideAmount ? "Mostra saldo" : "Nascondi saldo"}
+                      aria-pressed={hideAmount}
+                      className="p-2 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    >
+                      {hideAmount ? <EyeOff className="w-6 h-6" /> : <Eye className="w-6 h-6" />}
+                    </button>
                     <div className="text-sm text-muted-foreground">
                       su <span className="text-foreground/80 font-semibold">{fmt(totalBudget)}</span>
                     </div>
