@@ -35,6 +35,8 @@ function Dashboard() {
 
   const [tab, setTab] = useState<"panoramica" | "movimenti" | "budget">("panoramica");
   const [hideAmount, setHideAmount] = useState(false);
+  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
+  const toggleGroup = (g: string) => setExpandedGroups((s) => ({ ...s, [g]: !s[g] }));
 
   const [y, m] = month.split("-").map(Number);
   const monthLabel = `${MONTHS_IT[m - 1]} ${y}`;
