@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
-import { Plus, Wallet, Landmark, TrendingDown, Trash2, Vault, Eye, EyeOff, ChevronLeft, ChevronRight } from "lucide-react";
+import { Plus, Wallet, Landmark, TrendingDown, Trash2, Vault, Eye, EyeOff, ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
 import { useBudget } from "@/lib/budget-store";
 import type { MacroGroup, Category, Transaction } from "@/lib/budget-data";
 
@@ -35,6 +35,8 @@ function Dashboard() {
 
   const [tab, setTab] = useState<"panoramica" | "movimenti" | "budget">("panoramica");
   const [hideAmount, setHideAmount] = useState(false);
+  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
+  const toggleGroup = (g: string) => setExpandedGroups((s) => ({ ...s, [g]: !s[g] }));
 
   const [y, m] = month.split("-").map(Number);
   const monthLabel = `${MONTHS_IT[m - 1]} ${y}`;
@@ -272,18 +274,28 @@ function Dashboard() {
                 {groupTotals.map((g) => {
                   const pct = g.budget ? (g.spent / g.budget) * 100 : 0;
                   const over = g.spent > g.budget;
+                  const isOpen = !!expandedGroups[g.group];
+                  const groupCats = categories.filter((c) => c.group === g.group);
                   return (
                     <div key={g.group} className="glass-card rounded-2xl p-4 relative overflow-hidden group">
                       <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full opacity-10 blur-2xl group-hover:opacity-20 transition-opacity" style={{ background: "var(--gradient-primary)" }} />
-                      <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => toggleGroup(g.group)}
+                        aria-expanded={isOpen}
+                        className="relative w-full text-left focus:outline-none"
+                      >
                         <div className="flex items-start justify-between mb-2">
                           <div>
                             <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">{g.group}</div>
                             <div className="text-xl font-bold text-gradient font-display">{fmt(g.budget)}</div>
                           </div>
-                          <div className="text-right">
-                            <div className="text-[10px] text-muted-foreground">del totale</div>
-                            <div className="text-xs font-semibold text-foreground/80">{g.pct.toFixed(1)}%</div>
+                          <div className="text-right flex items-start gap-1.5">
+                            <div>
+                              <div className="text-[10px] text-muted-foreground">del totale</div>
+                              <div className="text-xs font-semibold text-foreground/80">{g.pct.toFixed(1)}%</div>
+                            </div>
+                            <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform mt-1 ${isOpen ? "rotate-180" : ""}`} />
                           </div>
                         </div>
                         <div className="flex items-center justify-between text-[10px] mb-1.5">
@@ -299,7 +311,44 @@ function Dashboard() {
                             }}
                           />
                         </div>
-                      </div>
+                      </button>
+                      {isOpen && (
+                        <div className="relative mt-3 pt-3 border-t border-white/5 space-y-2">
+                          {groupCats.map((c) => {
+                            const catSpent = spentByCat.get(c.name) ?? 0;
+                            const catRemaining = c.budget - catSpent;
+                            const catPct = c.budget ? (catSpent / c.budget) * 100 : 0;
+                            const catOver = catSpent > c.budget;
+                            return (
+                              <div key={c.name}>
+                                <div className="flex items-center justify-between text-[11px] mb-1">
+                                  <div className="flex items-center gap-1.5 min-w-0">
+                                    <span className="w-2 h-2 rounded-full shrink-0" style={{ background: c.color }} />
+                                    <span className="text-foreground/90 truncate">{c.name}</span>
+                                  </div>
+                                  <div className="text-right shrink-0 ml-2">
+                                    <span className={catOver ? "text-destructive font-semibold" : "text-foreground/80 font-semibold"}>{fmt(catSpent)}</span>
+                                    <span className="text-muted-foreground"> / {fmt(c.budget)}</span>
+                                  </div>
+                                </div>
+                                <div className="flex items-center justify-between text-[10px] mb-1">
+                                  <span className="text-muted-foreground">Rimanente</span>
+                                  <span className={catRemaining < 0 ? "text-destructive font-semibold" : "text-primary font-semibold"}>{fmt(catRemaining)}</span>
+                                </div>
+                                <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                                  <div
+                                    className="h-full rounded-full transition-all"
+                                    style={{
+                                      width: `${Math.min(100, catPct)}%`,
+                                      background: catOver ? "var(--color-destructive)" : c.color,
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
                   );
                 })}
