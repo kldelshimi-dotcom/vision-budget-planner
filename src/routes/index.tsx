@@ -62,6 +62,11 @@ function Dashboard() {
     .map((c) => ({ name: c.name, value: c.budget, color: c.color }))
     .filter((d) => d.value > 0);
 
+  const spentDonutData = categories
+    .map((c) => ({ name: c.name, value: spentByCat.get(c.name) ?? 0, color: c.color }))
+    .filter((d) => d.value > 0)
+    .sort((a, b) => b.value - a.value);
+
   const dailyData = useMemo(() => {
     const map = new Map<string, number>();
     transactions.forEach((t) => map.set(t.date, (map.get(t.date) ?? 0) + t.amount));
