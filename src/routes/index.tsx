@@ -218,20 +218,20 @@ function Dashboard() {
               </div>
             </section>
 
-            {/* BUDGET DONUT */}
+            {/* SPENT DONUT */}
             <section>
-              <SectionTitle>Distribuzione budget</SectionTitle>
+              <SectionTitle>Spese per categoria</SectionTitle>
               <div className="glass-card rounded-2xl p-4">
                 <div className="h-64 relative">
                   <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10">
-                    <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Totale</div>
-                    <div className="text-xl font-bold text-gradient">{fmt(totalBudget)}</div>
-                    <div className="text-[10px] text-muted-foreground mt-0.5">{categories.length} categorie</div>
+                    <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Speso</div>
+                    <div className="text-xl font-bold text-gradient">{fmt(totalSpent)}</div>
+                    <div className="text-[10px] text-muted-foreground mt-0.5">{spentDonutData.length} categorie</div>
                   </div>
                   <ResponsiveContainer>
                     <PieChart>
                       <Pie
-                        data={donutData}
+                        data={spentDonutData}
                         dataKey="value"
                         nameKey="name"
                         innerRadius={70}
@@ -240,7 +240,7 @@ function Dashboard() {
                         stroke="oklch(0.14 0.015 160)"
                         strokeWidth={2}
                       >
-                        {donutData.map((d) => (
+                        {spentDonutData.map((d) => (
                           <Cell key={d.name} fill={d.color} />
                         ))}
                       </Pie>
@@ -252,12 +252,12 @@ function Dashboard() {
                   </ResponsiveContainer>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2">
-                  {donutData.map((d) => (
+                  {spentDonutData.map((d) => (
                     <div key={d.name} className="flex items-center gap-2 text-[10px] px-2 py-1 rounded-lg hover:bg-white/5 transition-colors">
                       <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: d.color, boxShadow: `0 0 6px ${d.color}80` }} />
                       <span className="text-muted-foreground truncate">{d.name}</span>
                       <span className="ml-auto text-foreground/90 font-semibold">
-                        {((d.value / totalBudget) * 100).toFixed(1)}%
+                        {((d.value / totalSpent) * 100).toFixed(1)}%
                       </span>
                     </div>
                   ))}
