@@ -17,6 +17,7 @@ interface BudgetState {
   deleteIncome: (id: string) => void;
   updateCategoryBudget: (name: string, budget: number) => void;
   setBalances: (b: { cashOnHand?: number; bank?: number; owed?: number }) => void;
+  setMonth: (month: string) => void;
 }
 
 export const useBudget = create<BudgetState>()(
@@ -41,6 +42,7 @@ export const useBudget = create<BudgetState>()(
       updateCategoryBudget: (name, budget) =>
         set((s) => ({ categories: s.categories.map((c) => (c.name === name ? { ...c, budget } : c)) })),
       setBalances: (b) => set((s) => ({ ...s, ...b })),
+      setMonth: (month: string) => set({ month }),
     }),
     { name: "budget-app-v1" }
   )
