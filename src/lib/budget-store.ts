@@ -41,6 +41,7 @@ export const useBudget = create<BudgetState>()(
       updateCategoryBudget: (name, budget) =>
         set((s) => ({ categories: s.categories.map((c) => (c.name === name ? { ...c, budget } : c)) })),
       setBalances: (b) => set((s) => ({ ...s, ...b })),
+      setMonth: (month) => set({ month }),
     }),
     { name: "budget-app-v1" }
   )

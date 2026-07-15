@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
-import { Plus, Wallet, Landmark, TrendingDown, Trash2, Vault, Eye, EyeOff } from "lucide-react";
+import { Plus, Wallet, Landmark, TrendingDown, Trash2, Vault, Eye, EyeOff, ChevronLeft, ChevronRight } from "lucide-react";
 import { useBudget } from "@/lib/budget-store";
 import type { MacroGroup, Category, Transaction } from "@/lib/budget-data";
 
@@ -19,12 +19,18 @@ const fmt = (n: number) =>
 
 const GROUPS: MacroGroup[] = ["Necessità", "Varie", "Spese annuali", "Risparmi/Investimenti"];
 
+function shiftMonth(current: string, delta: number): string {
+  const [y, m] = current.split("-").map(Number);
+  const date = new Date(y, m - 1 + delta, 1);
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+}
+
 function Dashboard() {
   const {
     month, categories, transactions, incomes,
     cashOnHand, bank, owed,
     addTransaction, deleteTransaction, addIncome, deleteIncome,
-    updateCategoryBudget, setBalances,
+    updateCategoryBudget, setBalances, setMonth,
   } = useBudget();
 
   const [tab, setTab] = useState<"panoramica" | "movimenti" | "budget">("panoramica");
@@ -73,9 +79,25 @@ function Dashboard() {
       <header className="sticky top-0 z-20 backdrop-blur-xl bg-background/70 border-b border-white/5">
         <div className="max-w-6xl mx-auto px-5 pt-5 pb-3 flex flex-col items-center">
           <div className="text-[10px] uppercase tracking-[0.35em] text-muted-foreground mb-1">Budget Tracker</div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gradient text-center">
-            {monthLabel}
-          </h1>
+          <div className="flex items-center justify-center gap-1 md:gap-2">
+            <button
+              onClick={() => setMonth(shiftMonth(month, -1))}
+              aria-label="Mese precedente"
+              className="p-1.5 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+            >
+              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+            <h1 className="text-2xl md:text-3xl font-bold text-gradient text-center min-w-[150px] md:min-w-[200px]">
+              {monthLabel}
+            </h1>
+            <button
+              onClick={() => setMonth(shiftMonth(month, 1))}
+              aria-label="Mese successivo"
+              className="p-1.5 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+            >
+              <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+          </div>
         </div>
         <nav className="max-w-6xl mx-auto px-4 pb-2">
           <div className="glass-card rounded-full p-1 flex gap-1">
