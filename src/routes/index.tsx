@@ -349,6 +349,8 @@ function Dashboard() {
             categories={categories}
             spentByCat={spentByCat}
             onUpdate={updateCategoryBudget}
+            totalBudget={totalBudget}
+            donutData={donutData}
           />
         )}
       </main>
