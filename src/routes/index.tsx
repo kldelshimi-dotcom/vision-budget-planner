@@ -477,55 +477,149 @@ function AddIncomeRow({ onAdd, defaultDate }: { onAdd: (i: { source: string; amo
 }
 
 function MovimentiTab({
-  transactions, categories, onAdd, onDelete, defaultDate,
+  transactions, categories, onAdd, onDelete, onUpdate, defaultDate,
 }: {
   transactions: Transaction[];
   categories: string[];
   onAdd: (t: { date: string; amount: number; description: string; category: string; note?: string }) => void;
   onDelete: (id: string) => void;
+  onUpdate: (id: string, patch: Partial<Transaction>) => void;
   defaultDate: string;
 }) {
   const [date, setDate] = useState(defaultDate);
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState(categories[0]);
+  const [formOpen, setFormOpen] = useState(false);
 
-  const sorted = [...transactions].sort((a, b) => b.date.localeCompare(a.date));
+  const [showFilters, setShowFilters] = useState(false);
+  const [filterCategory, setFilterCategory] = useState<string>("");
+  const [filterFrom, setFilterFrom] = useState<string>("");
+  const [filterTo, setFilterTo] = useState<string>("");
+  const [filterHighlighted, setFilterHighlighted] = useState(false);
+
+  const [sortKey, setSortKey] = useState<"date" | "category" | "highlight">("date");
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
+
+  const [confirmDelete, setConfirmDelete] = useState<Transaction | null>(null);
+
+  const filtered = transactions.filter((t) => {
+    if (filterCategory && t.category !== filterCategory) return false;
+    if (filterFrom && t.date < filterFrom) return false;
+    if (filterTo && t.date > filterTo) return false;
+    if (filterHighlighted && !t.highlight) return false;
+    return true;
+  });
+
+  const sorted = [...filtered].sort((a, b) => {
+    const dir = sortDir === "asc" ? 1 : -1;
+    if (sortKey === "date") return a.date.localeCompare(b.date) * dir;
+    if (sortKey === "category") return a.category.localeCompare(b.category) * dir;
+    return ((a.highlight ? 1 : 0) - (b.highlight ? 1 : 0)) * dir;
+  });
+
+  const activeFilters = (filterCategory ? 1 : 0) + (filterFrom ? 1 : 0) + (filterTo ? 1 : 0) + (filterHighlighted ? 1 : 0);
 
   return (
     <div className="space-y-5 animate-fade-in">
       <section>
-        <SectionTitle>Nuovo movimento</SectionTitle>
-        <div className="glass-card rounded-2xl p-4 grid grid-cols-2 md:grid-cols-5 gap-2">
-          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="bg-input/60 rounded-lg px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-primary/50 col-span-1" />
-          <input type="number" placeholder="Importo €" value={amount} onChange={(e) => setAmount(e.target.value)} className="bg-input/60 rounded-lg px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-primary/50 col-span-1" />
-          <input placeholder="Descrizione" value={description} onChange={(e) => setDescription(e.target.value)} className="bg-input/60 rounded-lg px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-primary/50 col-span-2" />
-          <select value={category} onChange={(e) => setCategory(e.target.value)} className="bg-input/60 rounded-lg px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-primary/50 col-span-2 md:col-span-1">
-            {categories.map((c) => <option key={c} value={c}>{c}</option>)}
-          </select>
+        <div className="flex items-center justify-between mb-2">
+          <SectionTitle>Nuovo movimento</SectionTitle>
           <button
-            onClick={() => {
-              const n = parseFloat(amount);
-              if (n > 0) {
-                onAdd({ date, amount: n, description, category });
-                setAmount(""); setDescription("");
-              }
-            }}
-            className="rounded-lg px-3 py-2 text-xs font-bold hover:opacity-90 col-span-2 md:col-span-5 flex items-center justify-center gap-2 shadow-lg shadow-primary/25 transition-opacity"
-            style={{ background: "var(--gradient-primary)", color: "var(--color-primary-foreground)" }}
+            onClick={() => setFormOpen((v) => !v)}
+            className="text-[10px] px-2 py-1 rounded-md bg-white/5 hover:bg-white/10 flex items-center gap-1"
           >
-            <Plus className="w-3.5 h-3.5" /> Aggiungi movimento
+            {formOpen ? <X className="w-3 h-3" /> : <Plus className="w-3 h-3" />}
+            {formOpen ? "Chiudi" : "Aggiungi"}
           </button>
         </div>
+        {formOpen && (
+          <div className="glass-card rounded-2xl p-2.5 flex flex-wrap gap-1.5 items-center">
+            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 w-[110px]" />
+            <input type="number" placeholder="€" value={amount} onChange={(e) => setAmount(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 w-[70px]" />
+            <input placeholder="Descrizione" value={description} onChange={(e) => setDescription(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 flex-1 min-w-[100px]" />
+            <select value={category} onChange={(e) => setCategory(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 flex-1 min-w-[100px]">
+              {categories.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+            <button
+              onClick={() => {
+                const n = parseFloat(amount);
+                if (n > 0) {
+                  onAdd({ date, amount: n, description, category });
+                  setAmount(""); setDescription("");
+                }
+              }}
+              className="rounded-md px-2.5 py-1.5 text-[11px] font-bold hover:opacity-90 flex items-center gap-1 shadow-md shadow-primary/25"
+              style={{ background: "var(--gradient-primary)", color: "var(--color-primary-foreground)" }}
+            >
+              <Plus className="w-3 h-3" /> Aggiungi
+            </button>
+          </div>
+        )}
       </section>
 
       <section>
-        <SectionTitle>Movimenti · {transactions.length}</SectionTitle>
+        <div className="flex items-center justify-between mb-2 gap-2">
+          <SectionTitle>Movimenti · {sorted.length}{activeFilters > 0 && <span className="text-primary"> (filtrati)</span>}</SectionTitle>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => setShowFilters((v) => !v)}
+              className={`text-[10px] px-2 py-1 rounded-md flex items-center gap-1 ${showFilters || activeFilters > 0 ? "bg-primary/20 text-primary" : "bg-white/5 hover:bg-white/10"}`}
+            >
+              <Filter className="w-3 h-3" /> Filtri{activeFilters > 0 && ` · ${activeFilters}`}
+            </button>
+            <div className="flex items-center gap-1 bg-white/5 rounded-md px-1.5 py-1">
+              <ArrowUpDown className="w-3 h-3 text-muted-foreground" />
+              <select
+                value={sortKey}
+                onChange={(e) => setSortKey(e.target.value as "date" | "category" | "highlight")}
+                className="bg-transparent text-[10px] outline-none"
+              >
+                <option value="date">Data</option>
+                <option value="category">Categoria</option>
+                <option value="highlight">Evidenziati</option>
+              </select>
+              <button
+                onClick={() => setSortDir((d) => (d === "asc" ? "desc" : "asc"))}
+                className="text-[10px] text-muted-foreground hover:text-foreground px-1"
+                aria-label="Inverti direzione"
+              >
+                {sortDir === "asc" ? "↑" : "↓"}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {showFilters && (
+          <div className="glass-card rounded-2xl p-2.5 mb-2 flex flex-wrap gap-1.5 items-center">
+            <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none flex-1 min-w-[110px]">
+              <option value="">Tutte le categorie</option>
+              {categories.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+            <input type="date" value={filterFrom} onChange={(e) => setFilterFrom(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none w-[120px]" placeholder="Da" />
+            <input type="date" value={filterTo} onChange={(e) => setFilterTo(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none w-[120px]" placeholder="A" />
+            <button
+              onClick={() => setFilterHighlighted((v) => !v)}
+              className={`text-[10px] px-2 py-1.5 rounded-md flex items-center gap-1 ${filterHighlighted ? "bg-highlight/30 text-highlight" : "bg-white/5 hover:bg-white/10"}`}
+            >
+              <Star className={`w-3 h-3 ${filterHighlighted ? "fill-current" : ""}`} /> Evidenziati
+            </button>
+            {activeFilters > 0 && (
+              <button
+                onClick={() => { setFilterCategory(""); setFilterFrom(""); setFilterTo(""); setFilterHighlighted(false); }}
+                className="text-[10px] px-2 py-1.5 rounded-md bg-white/5 hover:bg-destructive/20 flex items-center gap-1 text-muted-foreground"
+              >
+                <X className="w-3 h-3" /> Reset
+              </button>
+            )}
+          </div>
+        )}
+
         <div className="glass-card rounded-2xl overflow-hidden">
           {sorted.map((t) => (
             <div
               key={t.id}
-              className={`flex items-center gap-3 px-4 py-2.5 border-b border-white/5 last:border-0 transition-colors ${
+              className={`flex items-center gap-2 px-3 py-2 border-b border-white/5 last:border-0 transition-colors ${
                 t.highlight ? "bg-highlight/20 border-l-4 border-l-highlight" : "hover:bg-white/[0.03]"
               }`}
             >
@@ -540,7 +634,14 @@ function MovimentiTab({
               <div className="text-right">
                 <div className="font-bold text-destructive font-display text-xs">−{fmt(t.amount)}</div>
               </div>
-              <button onClick={() => onDelete(t.id)} className="text-muted-foreground hover:text-destructive p-1 rounded-md hover:bg-destructive/10">
+              <button
+                onClick={() => onUpdate(t.id, { highlight: !t.highlight })}
+                className={`p-1 rounded-md hover:bg-white/10 ${t.highlight ? "text-highlight" : "text-muted-foreground hover:text-highlight"}`}
+                aria-label="Evidenzia"
+              >
+                <Star className={`w-3.5 h-3.5 ${t.highlight ? "fill-current" : ""}`} />
+              </button>
+              <button onClick={() => setConfirmDelete(t)} className="text-muted-foreground hover:text-destructive p-1 rounded-md hover:bg-destructive/10">
                 <Trash2 className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -550,6 +651,40 @@ function MovimentiTab({
           )}
         </div>
       </section>
+
+      {confirmDelete && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in"
+          onClick={() => setConfirmDelete(null)}
+        >
+          <div
+            className="glass-card rounded-2xl p-5 max-w-sm w-full space-y-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div>
+              <h3 className="font-bold text-sm mb-1">Eliminare questo movimento?</h3>
+              <p className="text-xs text-muted-foreground">
+                {confirmDelete.description || confirmDelete.category} · <span className="text-destructive font-semibold">−{fmt(confirmDelete.amount)}</span>
+              </p>
+              <p className="text-[10px] text-muted-foreground mt-1">L'operazione non può essere annullata.</p>
+            </div>
+            <div className="flex gap-2 justify-end">
+              <button
+                onClick={() => setConfirmDelete(null)}
+                className="px-3 py-1.5 rounded-md text-xs bg-white/5 hover:bg-white/10"
+              >
+                Annulla
+              </button>
+              <button
+                onClick={() => { onDelete(confirmDelete.id); setConfirmDelete(null); }}
+                className="px-3 py-1.5 rounded-md text-xs font-bold bg-destructive text-destructive-foreground hover:opacity-90 flex items-center gap-1"
+              >
+                <Trash2 className="w-3 h-3" /> Elimina
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
