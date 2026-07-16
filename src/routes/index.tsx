@@ -29,7 +29,7 @@ function Dashboard() {
   const {
     month, categories, transactions, incomes,
     cashOnHand, bank, owed,
-    addTransaction, deleteTransaction, addIncome, deleteIncome,
+    addTransaction, deleteTransaction, updateTransaction, addIncome, deleteIncome,
     updateCategoryBudget, setBalances, setMonth,
   } = useBudget();
 
