@@ -489,9 +489,7 @@ function MovimentiTab({
   const [y, m] = month.split("-").map(Number);
   const daysInMonth = new Date(y, m, 0).getDate();
   const today = new Date();
-  const initialDay = month === `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}`
-    ? Math.min(today.getDate(), daysInMonth)
-    : 1;
+  const initialDay = Math.min(today.getDate(), daysInMonth);
 
   const [day, setDay] = useState(initialDay);
   useEffect(() => {
