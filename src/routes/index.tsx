@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
-import { Plus, Wallet, Landmark, TrendingDown, Trash2, Vault, Eye, EyeOff, ChevronLeft, ChevronRight, ChevronDown, Star, Filter, ArrowUpDown, X } from "lucide-react";
+import { Plus, Wallet, Landmark, TrendingDown, Trash2, Vault, Eye, EyeOff, ChevronLeft, ChevronRight, ChevronDown, Star, ArrowUpDown, X } from "lucide-react";
 import { useBudget } from "@/lib/budget-store";
 import type { MacroGroup, Category, Transaction } from "@/lib/budget-data";
 
@@ -90,9 +90,9 @@ function Dashboard() {
             <button
               onClick={() => setMonth(shiftMonth(month, -1))}
               aria-label="Mese precedente"
-              className="p-1.5 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="p-2 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
             >
-              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+              <ChevronLeft className="w-7 h-7 md:w-8 md:h-8" />
             </button>
             <h1 className="text-2xl md:text-3xl font-bold text-gradient text-center min-w-[150px] md:min-w-[200px]">
               {monthLabel}
@@ -100,9 +100,9 @@ function Dashboard() {
             <button
               onClick={() => setMonth(shiftMonth(month, 1))}
               aria-label="Mese successivo"
-              className="p-1.5 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="p-2 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
             >
-              <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+              <ChevronRight className="w-7 h-7 md:w-8 md:h-8" />
             </button>
           </div>
         </div>
@@ -390,7 +390,7 @@ function Dashboard() {
             onAdd={addTransaction}
             onDelete={deleteTransaction}
             onUpdate={updateTransaction}
-            defaultDate={`${month}-01`}
+            month={month}
           />
         )}
 
@@ -477,25 +477,31 @@ function AddIncomeRow({ onAdd, defaultDate }: { onAdd: (i: { source: string; amo
 }
 
 function MovimentiTab({
-  transactions, categories, onAdd, onDelete, onUpdate, defaultDate,
+  transactions, categories, onAdd, onDelete, onUpdate, month,
 }: {
   transactions: Transaction[];
   categories: string[];
   onAdd: (t: { date: string; amount: number; description: string; category: string; note?: string }) => void;
   onDelete: (id: string) => void;
   onUpdate: (id: string, patch: Partial<Transaction>) => void;
-  defaultDate: string;
+  month: string;
 }) {
-  const [date, setDate] = useState(defaultDate);
+  const [y, m] = month.split("-").map(Number);
+  const daysInMonth = new Date(y, m, 0).getDate();
+  const today = new Date();
+  const initialDay = Math.min(today.getDate(), daysInMonth);
+
+  const [day, setDay] = useState(initialDay);
+  useEffect(() => {
+    setDay(initialDay);
+  }, [month, initialDay]);
+
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState(categories[0]);
-  const [formOpen, setFormOpen] = useState(false);
 
-  const [showFilters, setShowFilters] = useState(false);
   const [filterCategory, setFilterCategory] = useState<string>("");
-  const [filterFrom, setFilterFrom] = useState<string>("");
-  const [filterTo, setFilterTo] = useState<string>("");
+  const [filterDate, setFilterDate] = useState<string>("");
   const [filterHighlighted, setFilterHighlighted] = useState(false);
 
   const [sortKey, setSortKey] = useState<"date" | "category" | "highlight">("date");
@@ -505,8 +511,7 @@ function MovimentiTab({
 
   const filtered = transactions.filter((t) => {
     if (filterCategory && t.category !== filterCategory) return false;
-    if (filterFrom && t.date < filterFrom) return false;
-    if (filterTo && t.date > filterTo) return false;
+    if (filterDate && t.date !== filterDate) return false;
     if (filterHighlighted && !t.highlight) return false;
     return true;
   });
@@ -518,102 +523,93 @@ function MovimentiTab({
     return ((a.highlight ? 1 : 0) - (b.highlight ? 1 : 0)) * dir;
   });
 
-  const activeFilters = (filterCategory ? 1 : 0) + (filterFrom ? 1 : 0) + (filterTo ? 1 : 0) + (filterHighlighted ? 1 : 0);
+  const activeFilters = (filterCategory ? 1 : 0) + (filterDate ? 1 : 0) + (filterHighlighted ? 1 : 0);
 
   return (
     <div className="space-y-5 animate-fade-in">
       <section>
-        <div className="flex items-center justify-between mb-2">
-          <SectionTitle>Nuovo movimento</SectionTitle>
+        <SectionTitle>Nuovo movimento</SectionTitle>
+        <div className="glass-card rounded-2xl p-2.5 flex flex-wrap gap-1.5 items-center">
+          <div className="flex items-center gap-1.5 bg-input/60 rounded-md px-2 py-1.5">
+            <span className="text-[10px] text-muted-foreground uppercase">{MONTHS_IT[m - 1]} {y}</span>
+            <input
+              type="number"
+              min={1}
+              max={daysInMonth}
+              value={day}
+              onChange={(e) => {
+                const val = Number(e.target.value) || 1;
+                setDay(Math.min(daysInMonth, Math.max(1, val)));
+              }}
+              className="w-10 bg-transparent text-[11px] outline-none focus:ring-1 focus:ring-primary/50 text-center"
+            />
+          </div>
+          <input type="number" placeholder="€" value={amount} onChange={(e) => setAmount(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 w-[70px]" />
+          <input placeholder="Descrizione" value={description} onChange={(e) => setDescription(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 flex-1 min-w-[100px]" />
+          <select value={category} onChange={(e) => setCategory(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 flex-1 min-w-[100px]">
+            {categories.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
           <button
-            onClick={() => setFormOpen((v) => !v)}
-            className="text-[10px] px-2 py-1 rounded-md bg-white/5 hover:bg-white/10 flex items-center gap-1"
+            onClick={() => {
+              const n = parseFloat(amount);
+              if (n > 0) {
+                onAdd({ date: `${month}-${String(day).padStart(2, "0")}`, amount: n, description, category });
+                setAmount(""); setDescription("");
+              }
+            }}
+            className="rounded-md px-2.5 py-1.5 text-[11px] font-bold hover:opacity-90 flex items-center gap-1 shadow-md shadow-primary/25"
+            style={{ background: "var(--gradient-primary)", color: "var(--color-primary-foreground)" }}
           >
-            {formOpen ? <X className="w-3 h-3" /> : <Plus className="w-3 h-3" />}
-            {formOpen ? "Chiudi" : "Aggiungi"}
+            <Plus className="w-3 h-3" /> Aggiungi
           </button>
         </div>
-        {formOpen && (
-          <div className="glass-card rounded-2xl p-2.5 flex flex-wrap gap-1.5 items-center">
-            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 w-[110px]" />
-            <input type="number" placeholder="€" value={amount} onChange={(e) => setAmount(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 w-[70px]" />
-            <input placeholder="Descrizione" value={description} onChange={(e) => setDescription(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 flex-1 min-w-[100px]" />
-            <select value={category} onChange={(e) => setCategory(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 flex-1 min-w-[100px]">
-              {categories.map((c) => <option key={c} value={c}>{c}</option>)}
-            </select>
-            <button
-              onClick={() => {
-                const n = parseFloat(amount);
-                if (n > 0) {
-                  onAdd({ date, amount: n, description, category });
-                  setAmount(""); setDescription("");
-                }
-              }}
-              className="rounded-md px-2.5 py-1.5 text-[11px] font-bold hover:opacity-90 flex items-center gap-1 shadow-md shadow-primary/25"
-              style={{ background: "var(--gradient-primary)", color: "var(--color-primary-foreground)" }}
-            >
-              <Plus className="w-3 h-3" /> Aggiungi
-            </button>
-          </div>
-        )}
       </section>
 
       <section>
         <div className="flex items-center justify-between mb-2 gap-2">
           <SectionTitle>Movimenti · {sorted.length}{activeFilters > 0 && <span className="text-primary"> (filtrati)</span>}</SectionTitle>
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => setShowFilters((v) => !v)}
-              className={`text-[10px] px-2 py-1 rounded-md flex items-center gap-1 ${showFilters || activeFilters > 0 ? "bg-primary/20 text-primary" : "bg-white/5 hover:bg-white/10"}`}
+          <div className="flex items-center gap-1 bg-white/5 rounded-md px-1.5 py-1">
+            <ArrowUpDown className="w-3 h-3 text-muted-foreground" />
+            <select
+              value={sortKey}
+              onChange={(e) => setSortKey(e.target.value as "date" | "category" | "highlight")}
+              className="bg-transparent text-[10px] outline-none"
             >
-              <Filter className="w-3 h-3" /> Filtri{activeFilters > 0 && ` · ${activeFilters}`}
+              <option value="date">Data</option>
+              <option value="category">Categoria</option>
+              <option value="highlight">Evidenziati</option>
+            </select>
+            <button
+              onClick={() => setSortDir((d) => (d === "asc" ? "desc" : "asc"))}
+              className="text-[10px] text-muted-foreground hover:text-foreground px-1"
+              aria-label="Inverti direzione"
+            >
+              {sortDir === "asc" ? "↑" : "↓"}
             </button>
-            <div className="flex items-center gap-1 bg-white/5 rounded-md px-1.5 py-1">
-              <ArrowUpDown className="w-3 h-3 text-muted-foreground" />
-              <select
-                value={sortKey}
-                onChange={(e) => setSortKey(e.target.value as "date" | "category" | "highlight")}
-                className="bg-transparent text-[10px] outline-none"
-              >
-                <option value="date">Data</option>
-                <option value="category">Categoria</option>
-                <option value="highlight">Evidenziati</option>
-              </select>
-              <button
-                onClick={() => setSortDir((d) => (d === "asc" ? "desc" : "asc"))}
-                className="text-[10px] text-muted-foreground hover:text-foreground px-1"
-                aria-label="Inverti direzione"
-              >
-                {sortDir === "asc" ? "↑" : "↓"}
-              </button>
-            </div>
           </div>
         </div>
 
-        {showFilters && (
-          <div className="glass-card rounded-2xl p-2.5 mb-2 flex flex-wrap gap-1.5 items-center">
-            <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none flex-1 min-w-[110px]">
-              <option value="">Tutte le categorie</option>
-              {categories.map((c) => <option key={c} value={c}>{c}</option>)}
-            </select>
-            <input type="date" value={filterFrom} onChange={(e) => setFilterFrom(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none w-[120px]" placeholder="Da" />
-            <input type="date" value={filterTo} onChange={(e) => setFilterTo(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none w-[120px]" placeholder="A" />
+        <div className="glass-card rounded-2xl p-2.5 mb-2 flex flex-wrap gap-1.5 items-center">
+          <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none flex-1 min-w-[110px]">
+            <option value="">Tutte le categorie</option>
+            {categories.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+          <input type="date" value={filterDate} onChange={(e) => setFilterDate(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none w-[130px]" placeholder="Data" />
+          <button
+            onClick={() => setFilterHighlighted((v) => !v)}
+            className={`text-[10px] px-2 py-1.5 rounded-md flex items-center gap-1 ${filterHighlighted ? "bg-highlight/30 text-highlight" : "bg-white/5 hover:bg-white/10"}`}
+          >
+            <Star className={`w-3 h-3 ${filterHighlighted ? "fill-current" : ""}`} /> Evidenziati
+          </button>
+          {activeFilters > 0 && (
             <button
-              onClick={() => setFilterHighlighted((v) => !v)}
-              className={`text-[10px] px-2 py-1.5 rounded-md flex items-center gap-1 ${filterHighlighted ? "bg-highlight/30 text-highlight" : "bg-white/5 hover:bg-white/10"}`}
+              onClick={() => { setFilterCategory(""); setFilterDate(""); setFilterHighlighted(false); }}
+              className="text-[10px] px-2 py-1.5 rounded-md bg-white/5 hover:bg-destructive/20 flex items-center gap-1 text-muted-foreground"
             >
-              <Star className={`w-3 h-3 ${filterHighlighted ? "fill-current" : ""}`} /> Evidenziati
+              <X className="w-3 h-3" /> Reset
             </button>
-            {activeFilters > 0 && (
-              <button
-                onClick={() => { setFilterCategory(""); setFilterFrom(""); setFilterTo(""); setFilterHighlighted(false); }}
-                className="text-[10px] px-2 py-1.5 rounded-md bg-white/5 hover:bg-destructive/20 flex items-center gap-1 text-muted-foreground"
-              >
-                <X className="w-3 h-3" /> Reset
-              </button>
-            )}
-          </div>
-        )}
+          )}
+        </div>
 
         <div className="glass-card rounded-2xl overflow-hidden">
           {sorted.map((t) => (
