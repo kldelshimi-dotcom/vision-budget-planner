@@ -389,6 +389,7 @@ function Dashboard() {
             categories={categories.map((c) => c.name)}
             onAdd={addTransaction}
             onDelete={deleteTransaction}
+            onUpdate={updateTransaction}
             defaultDate={`${month}-01`}
           />
         )}
