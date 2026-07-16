@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
-import { Plus, Wallet, Landmark, TrendingDown, Trash2, Vault, Eye, EyeOff, ChevronLeft, ChevronRight, ChevronDown, Star, Filter, ArrowUpDown, X } from "lucide-react";
+import { Plus, Wallet, Landmark, TrendingDown, Trash2, Vault, Eye, EyeOff, ChevronLeft, ChevronRight, ChevronDown, Star, ArrowUpDown, X } from "lucide-react";
 import { useBudget } from "@/lib/budget-store";
 import type { MacroGroup, Category, Transaction } from "@/lib/budget-data";
 
@@ -90,9 +90,9 @@ function Dashboard() {
             <button
               onClick={() => setMonth(shiftMonth(month, -1))}
               aria-label="Mese precedente"
-              className="p-1.5 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="p-2 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
             >
-              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+              <ChevronLeft className="w-7 h-7 md:w-8 md:h-8" />
             </button>
             <h1 className="text-2xl md:text-3xl font-bold text-gradient text-center min-w-[150px] md:min-w-[200px]">
               {monthLabel}
@@ -100,9 +100,9 @@ function Dashboard() {
             <button
               onClick={() => setMonth(shiftMonth(month, 1))}
               aria-label="Mese successivo"
-              className="p-1.5 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="p-2 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
             >
-              <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+              <ChevronRight className="w-7 h-7 md:w-8 md:h-8" />
             </button>
           </div>
         </div>
@@ -390,7 +390,7 @@ function Dashboard() {
             onAdd={addTransaction}
             onDelete={deleteTransaction}
             onUpdate={updateTransaction}
-            defaultDate={`${month}-01`}
+            month={month}
           />
         )}
 
