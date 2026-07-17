@@ -508,6 +508,7 @@ function MovimentiTab({
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
 
   const [confirmDelete, setConfirmDelete] = useState<Transaction | null>(null);
+  const [editTx, setEditTx] = useState<Transaction | null>(null);
 
   const filtered = transactions.filter((t) => {
     if (filterCategory && t.category !== filterCategory) return false;
