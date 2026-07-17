@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
-import { Plus, Wallet, Landmark, TrendingDown, Trash2, Vault, Eye, EyeOff, ChevronLeft, ChevronRight, ChevronDown, Highlighter, ArrowUpDown, X, Pencil, Check } from "lucide-react";
+import { Plus, Wallet, Landmark, Trash2, Vault, Eye, EyeOff, ChevronLeft, ChevronRight, ChevronDown, Highlighter, ArrowUpDown, X, Pencil, Check } from "lucide-react";
 import { useBudget } from "@/lib/budget-store";
 import type { MacroGroup, Category, Transaction } from "@/lib/budget-data";
 
@@ -28,7 +28,7 @@ function shiftMonth(current: string, delta: number): string {
 function Dashboard() {
   const {
     month, categories, transactions, incomes,
-    cashOnHand, bank, owed,
+    cashOnHand, bank,
     addTransaction, deleteTransaction, updateTransaction, addIncome, deleteIncome,
     updateCategoryBudget, setBalances, setMonth,
   } = useBudget();
@@ -133,8 +133,8 @@ function Dashboard() {
               <div className="glass-card rounded-3xl p-4 md:p-6 relative overflow-hidden">
                 <div className="absolute inset-0 opacity-60 pointer-events-none" style={{ background: "var(--gradient-glow)" }} />
                 <div className="relative">
-                  <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-1">Rimanente questo mese</div>
-                  <div className="flex items-baseline gap-2 flex-wrap">
+                  <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Rimanente questo mese</div>
+                  <div className="flex items-baseline gap-2 flex-wrap mt-0.5">
                     <div className="text-3xl md:text-4xl font-bold text-gradient font-display">
                       {hideAmount ? "€ ••••••••" : fmt(remaining)}
                     </div>
@@ -150,7 +150,7 @@ function Dashboard() {
                       su <span className="text-foreground/80 font-semibold">{fmt(totalBudget)}</span>
                     </div>
                   </div>
-                  <div className="mt-3 h-1.5 rounded-full bg-white/5 overflow-hidden">
+                  <div className="mt-2 h-1.5 rounded-full bg-white/5 overflow-hidden">
                     <div
                       className="h-full rounded-full transition-all"
                       style={{
@@ -159,7 +159,7 @@ function Dashboard() {
                       }}
                     />
                   </div>
-                  <div className="mt-2 flex justify-between text-[10px] text-muted-foreground">
+                  <div className="mt-1 flex justify-between text-[10px] text-muted-foreground">
                     <span>Speso <span className="text-destructive font-semibold">{fmt(totalSpent)}</span></span>
                     <span>{totalBudget ? ((totalSpent / totalBudget) * 100).toFixed(1) : 0}%</span>
                   </div>
@@ -176,10 +176,9 @@ function Dashboard() {
             {/* WALLETS */}
             <section>
               <SectionTitle>Portafoglio</SectionTitle>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 <BalanceInput icon={<Wallet className="w-4 h-4" />} label="Contanti" value={cashOnHand} onChange={(v) => setBalances({ cashOnHand: v })} />
                 <BalanceInput icon={<Landmark className="w-4 h-4" />} label="In banca" value={bank} onChange={(v) => setBalances({ bank: v })} />
-                <BalanceInput icon={<TrendingDown className="w-4 h-4" />} label="Soldi in meno" value={owed} onChange={(v) => setBalances({ owed: v })} />
               </div>
 
               <div className="mt-3 glass-card rounded-2xl p-4 flex items-center gap-3">
@@ -188,7 +187,7 @@ function Dashboard() {
                 </div>
                 <div>
                   <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Totale disponibile</div>
-                  <div className="text-xl font-bold text-gradient">{fmt(cashOnHand + bank - owed)}</div>
+                  <div className="text-xl font-bold text-gradient">{fmt(cashOnHand + bank)}</div>
                 </div>
               </div>
             </section>
