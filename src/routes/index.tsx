@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
-import { Plus, Wallet, Landmark, TrendingDown, Trash2, Vault, Eye, EyeOff, ChevronLeft, ChevronRight, ChevronDown, Star, ArrowUpDown, X } from "lucide-react";
+import { Plus, Wallet, Landmark, TrendingDown, Trash2, Vault, Eye, EyeOff, ChevronLeft, ChevronRight, ChevronDown, Highlighter, ArrowUpDown, X, Pencil, Check } from "lucide-react";
 import { useBudget } from "@/lib/budget-store";
 import type { MacroGroup, Category, Transaction } from "@/lib/budget-data";
 
@@ -508,6 +508,7 @@ function MovimentiTab({
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
 
   const [confirmDelete, setConfirmDelete] = useState<Transaction | null>(null);
+  const [editTx, setEditTx] = useState<Transaction | null>(null);
 
   const filtered = transactions.filter((t) => {
     if (filterCategory && t.category !== filterCategory) return false;
@@ -599,7 +600,7 @@ function MovimentiTab({
             onClick={() => setFilterHighlighted((v) => !v)}
             className={`text-[10px] px-2 py-1.5 rounded-md flex items-center gap-1 ${filterHighlighted ? "bg-highlight/30 text-highlight" : "bg-white/5 hover:bg-white/10"}`}
           >
-            <Star className={`w-3 h-3 ${filterHighlighted ? "fill-current" : ""}`} /> Evidenziati
+            <Highlighter className={`w-3 h-3 ${filterHighlighted ? "" : ""}`} /> Evidenziati
           </button>
           {activeFilters > 0 && (
             <button
@@ -635,7 +636,14 @@ function MovimentiTab({
                 className={`p-1 rounded-md hover:bg-white/10 ${t.highlight ? "text-highlight" : "text-muted-foreground hover:text-highlight"}`}
                 aria-label="Evidenzia"
               >
-                <Star className={`w-3.5 h-3.5 ${t.highlight ? "fill-current" : ""}`} />
+                <Highlighter className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={() => setEditTx(t)}
+                className="text-muted-foreground hover:text-primary p-1 rounded-md hover:bg-white/10"
+                aria-label="Modifica"
+              >
+                <Pencil className="w-3.5 h-3.5" />
               </button>
               <button onClick={() => setConfirmDelete(t)} className="text-muted-foreground hover:text-destructive p-1 rounded-md hover:bg-destructive/10">
                 <Trash2 className="w-3.5 h-3.5" />
@@ -681,6 +689,89 @@ function MovimentiTab({
           </div>
         </div>
       )}
+
+      {editTx && (
+        <EditTransactionModal
+          tx={editTx}
+          categories={categories}
+          onClose={() => setEditTx(null)}
+          onSave={(patch) => { onUpdate(editTx.id, patch); setEditTx(null); }}
+        />
+      )}
+    </div>
+  );
+}
+
+function EditTransactionModal({
+  tx, categories, onClose, onSave,
+}: {
+  tx: Transaction;
+  categories: string[];
+  onClose: () => void;
+  onSave: (patch: Partial<Transaction>) => void;
+}) {
+  const [amount, setAmount] = useState(String(tx.amount));
+  const [description, setDescription] = useState(tx.description ?? "");
+  const [category, setCategory] = useState(tx.category);
+  const [date, setDate] = useState(tx.date);
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in"
+      onClick={onClose}
+    >
+      <div
+        className="glass-card rounded-2xl p-5 max-w-sm w-full space-y-3"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h3 className="font-bold text-sm">Modifica movimento</h3>
+        <div className="space-y-2">
+          <div className="flex gap-2">
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 flex-1"
+            />
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 w-[90px]"
+              placeholder="€"
+            />
+          </div>
+          <input
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 w-full"
+            placeholder="Descrizione"
+          />
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 w-full"
+          >
+            {categories.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+        </div>
+        <div className="flex gap-2 justify-end">
+          <button onClick={onClose} className="px-3 py-1.5 rounded-md text-xs bg-white/5 hover:bg-white/10">
+            Annulla
+          </button>
+          <button
+            onClick={() => {
+              const n = parseFloat(amount);
+              if (!isFinite(n) || n <= 0) return;
+              onSave({ amount: n, description, category, date });
+            }}
+            className="px-3 py-1.5 rounded-md text-xs font-bold hover:opacity-90 flex items-center gap-1 shadow-md shadow-primary/25"
+            style={{ background: "var(--gradient-primary)", color: "var(--color-primary-foreground)" }}
+          >
+            <Check className="w-3 h-3" /> Salva
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
