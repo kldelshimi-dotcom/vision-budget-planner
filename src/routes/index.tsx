@@ -702,6 +702,80 @@ function MovimentiTab({
   );
 }
 
+function EditTransactionModal({
+  tx, categories, onClose, onSave,
+}: {
+  tx: Transaction;
+  categories: string[];
+  onClose: () => void;
+  onSave: (patch: Partial<Transaction>) => void;
+}) {
+  const [amount, setAmount] = useState(String(tx.amount));
+  const [description, setDescription] = useState(tx.description ?? "");
+  const [category, setCategory] = useState(tx.category);
+  const [date, setDate] = useState(tx.date);
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in"
+      onClick={onClose}
+    >
+      <div
+        className="glass-card rounded-2xl p-5 max-w-sm w-full space-y-3"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h3 className="font-bold text-sm">Modifica movimento</h3>
+        <div className="space-y-2">
+          <div className="flex gap-2">
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 flex-1"
+            />
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 w-[90px]"
+              placeholder="€"
+            />
+          </div>
+          <input
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 w-full"
+            placeholder="Descrizione"
+          />
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 w-full"
+          >
+            {categories.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+        </div>
+        <div className="flex gap-2 justify-end">
+          <button onClick={onClose} className="px-3 py-1.5 rounded-md text-xs bg-white/5 hover:bg-white/10">
+            Annulla
+          </button>
+          <button
+            onClick={() => {
+              const n = parseFloat(amount);
+              if (!isFinite(n) || n <= 0) return;
+              onSave({ amount: n, description, category, date });
+            }}
+            className="px-3 py-1.5 rounded-md text-xs font-bold hover:opacity-90 flex items-center gap-1 shadow-md shadow-primary/25"
+            style={{ background: "var(--gradient-primary)", color: "var(--color-primary-foreground)" }}
+          >
+            <Check className="w-3 h-3" /> Salva
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function BudgetTab({
   categories, spentByCat, onUpdate, totalBudget, donutData,
 }: {
