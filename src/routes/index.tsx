@@ -529,26 +529,27 @@ function MovimentiTab({
     <div className="space-y-5 animate-fade-in">
       <section>
         <SectionTitle>Nuovo movimento</SectionTitle>
-        <div className="glass-card rounded-2xl p-2.5 flex flex-wrap gap-1.5 items-center">
-          <div className="flex items-center gap-1.5 bg-input/60 rounded-md px-2 py-1.5">
-            <span className="text-[10px] text-muted-foreground uppercase">{MONTHS_IT[m - 1]} {y}</span>
-            <input
-              type="number"
-              min={1}
-              max={daysInMonth}
-              value={day}
-              onChange={(e) => {
-                const val = Number(e.target.value) || 1;
-                setDay(Math.min(daysInMonth, Math.max(1, val)));
-              }}
-              className="w-10 bg-transparent text-[11px] outline-none focus:ring-1 focus:ring-primary/50 text-center"
-            />
+        <div className="glass-card rounded-2xl p-2 space-y-2">
+          <div className="grid grid-cols-[42px_58px_1fr_78px] gap-1.5 items-center">
+            <div className="flex items-center justify-center bg-input/60 rounded-md px-1 py-1.5">
+              <input
+                type="number"
+                min={1}
+                max={daysInMonth}
+                value={day}
+                onChange={(e) => {
+                  const val = Number(e.target.value) || 1;
+                  setDay(Math.min(daysInMonth, Math.max(1, val)));
+                }}
+                className="w-full bg-transparent text-[11px] outline-none focus:ring-1 focus:ring-primary/50 text-center"
+              />
+            </div>
+            <input type="number" placeholder="€" value={amount} onChange={(e) => setAmount(e.target.value)} className="bg-input/60 rounded-md px-1 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 text-center" />
+            <input placeholder="Descrizione" value={description} onChange={(e) => setDescription(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 min-w-0 truncate" />
+            <select value={category} onChange={(e) => setCategory(e.target.value)} className="bg-input/60 rounded-md px-1 py-1.5 text-[10px] outline-none focus:ring-1 focus:ring-primary/50 min-w-0 truncate">
+              {categories.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
           </div>
-          <input type="number" placeholder="€" value={amount} onChange={(e) => setAmount(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 w-[70px]" />
-          <input placeholder="Descrizione" value={description} onChange={(e) => setDescription(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 flex-1 min-w-[100px]" />
-          <select value={category} onChange={(e) => setCategory(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 flex-1 min-w-[100px]">
-            {categories.map((c) => <option key={c} value={c}>{c}</option>)}
-          </select>
           <button
             onClick={() => {
               const n = parseFloat(amount);
@@ -557,7 +558,7 @@ function MovimentiTab({
                 setAmount(""); setDescription("");
               }
             }}
-            className="rounded-md px-2.5 py-1.5 text-[11px] font-bold hover:opacity-90 flex items-center gap-1 shadow-md shadow-primary/25"
+            className="w-full rounded-md px-2.5 py-1.5 text-[11px] font-bold hover:opacity-90 flex items-center justify-center gap-1 shadow-md shadow-primary/25"
             style={{ background: "var(--gradient-primary)", color: "var(--color-primary-foreground)" }}
           >
             <Plus className="w-3 h-3" /> Aggiungi
@@ -589,24 +590,24 @@ function MovimentiTab({
           </div>
         </div>
 
-        <div className="glass-card rounded-2xl p-2.5 mb-2 flex flex-wrap gap-1.5 items-center">
-          <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none flex-1 min-w-[110px]">
-            <option value="">Tutte le categorie</option>
+        <div className="glass-card rounded-2xl p-2 flex flex-nowrap gap-1.5 items-center overflow-hidden">
+          <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)} className="bg-input/60 rounded-md px-1.5 py-1.5 text-[10px] outline-none flex-1 min-w-0 truncate">
+            <option value="">Tutte</option>
             {categories.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
-          <input type="date" value={filterDate} onChange={(e) => setFilterDate(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none w-[130px]" placeholder="Data" />
+          <input type="date" value={filterDate} onChange={(e) => setFilterDate(e.target.value)} className="bg-input/60 rounded-md px-1.5 py-1.5 text-[10px] outline-none w-[90px] shrink-0" placeholder="Data" />
           <button
             onClick={() => setFilterHighlighted((v) => !v)}
-            className={`text-[10px] px-2 py-1.5 rounded-md flex items-center gap-1 ${filterHighlighted ? "bg-highlight/30 text-highlight" : "bg-white/5 hover:bg-white/10"}`}
+            className={`shrink-0 text-[10px] px-2 py-1.5 rounded-md flex items-center gap-1 ${filterHighlighted ? "bg-highlight/30 text-highlight" : "bg-white/5 hover:bg-white/10"}`}
           >
-            <Star className={`w-3 h-3 ${filterHighlighted ? "fill-current" : ""}`} /> Evidenziati
+            <Star className={`w-3 h-3 ${filterHighlighted ? "fill-current" : ""}`} /> <span className="hidden sm:inline">Evidenziati</span>
           </button>
           {activeFilters > 0 && (
             <button
               onClick={() => { setFilterCategory(""); setFilterDate(""); setFilterHighlighted(false); }}
-              className="text-[10px] px-2 py-1.5 rounded-md bg-white/5 hover:bg-destructive/20 flex items-center gap-1 text-muted-foreground"
+              className="shrink-0 text-[10px] px-2 py-1.5 rounded-md bg-white/5 hover:bg-destructive/20 flex items-center gap-1 text-muted-foreground"
             >
-              <X className="w-3 h-3" /> Reset
+              <X className="w-3 h-3" /> <span className="hidden sm:inline">Reset</span>
             </button>
           )}
         </div>
