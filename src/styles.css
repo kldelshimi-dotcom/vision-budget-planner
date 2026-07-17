@@ -37,15 +37,15 @@
 }
 
 :root {
-  --radius: 0.4rem;
+  --radius: 0.2rem;
 
-  /* Modern palette: deep charcoal with vibrant emerald & electric cyan */
-  --background: oklch(0.13 0.002 260);
+  /* Modern palette: Black OLED deep charcoal with vibrant emerald & electric cyan */
+  --background: oklch(0 0 0);
   --foreground: oklch(1 0 0);
 
-  --card: oklch(0.17 0.003 260);
+  --card: oklch(0.08 0.001 260);
   --card-foreground: oklch(1 0 0);
-  --popover: oklch(0.17 0.003 260);
+  --popover: oklch(0.08 0.001 260);
   --popover-foreground: oklch(1 0 0);
 
   /* Jewel emerald #00C896 */
