@@ -599,7 +599,7 @@ function MovimentiTab({
             onClick={() => setFilterHighlighted((v) => !v)}
             className={`text-[10px] px-2 py-1.5 rounded-md flex items-center gap-1 ${filterHighlighted ? "bg-highlight/30 text-highlight" : "bg-white/5 hover:bg-white/10"}`}
           >
-            <Star className={`w-3 h-3 ${filterHighlighted ? "fill-current" : ""}`} /> Evidenziati
+            <Highlighter className={`w-3 h-3 ${filterHighlighted ? "" : ""}`} /> Evidenziati
           </button>
           {activeFilters > 0 && (
             <button
