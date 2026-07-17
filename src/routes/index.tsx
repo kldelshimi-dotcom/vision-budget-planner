@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
-import { Plus, Wallet, Landmark, Trash2, Vault, Eye, EyeOff, ChevronLeft, ChevronRight, ChevronDown, Highlighter, ArrowUpDown, X, Pencil, Check } from "lucide-react";
+import { Plus, Wallet, Trash2, Vault, Eye, EyeOff, ChevronLeft, ChevronRight, ChevronDown, Highlighter, ArrowUpDown, X, Pencil, Check } from "lucide-react";
 import { useBudget } from "@/lib/budget-store";
 import type { MacroGroup, Category, Transaction } from "@/lib/budget-data";
 
@@ -176,9 +176,9 @@ function Dashboard() {
             {/* WALLETS */}
             <section>
               <SectionTitle>Portafoglio</SectionTitle>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                <BalanceInput icon={<Wallet className="w-4 h-4" />} label="Contanti" value={cashOnHand} onChange={(v) => setBalances({ cashOnHand: v })} />
-                <BalanceInput icon={<Landmark className="w-4 h-4" />} label="In banca" value={bank} onChange={(v) => setBalances({ bank: v })} />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <BanknoteInput value={cashOnHand} onChange={(v) => setBalances({ cashOnHand: v })} />
+                <CreditCardInput value={bank} onChange={(v) => setBalances({ bank: v })} />
               </div>
 
               <div className="mt-3 glass-card rounded-2xl p-4 flex items-center gap-3">
@@ -426,25 +426,103 @@ function MiniStat({ label, value, tone }: { label: string; value: string; tone?:
   );
 }
 
-function BalanceInput({ icon, label, value, onChange }: { icon: React.ReactNode; label: string; value: number; onChange: (v: number) => void }) {
+function BanknoteInput({ value, onChange }: { value: number; onChange: (v: number) => void }) {
   return (
-    <label className="glass-card rounded-2xl p-3 flex items-center gap-3 hover:border-primary/30 transition-colors cursor-text group">
-      <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary/20 transition-colors">
-        {icon}
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="text-[10px] uppercase tracking-widest text-muted-foreground">{label}</div>
-        <div className="flex items-baseline gap-1">
-          <span className="text-muted-foreground text-xs">€</span>
-          <input
-            type="number"
-            value={value}
-            onChange={(e) => onChange(Number(e.target.value) || 0)}
-            className="w-full bg-transparent text-base font-bold font-display outline-none focus:text-primary"
-          />
+    <div className="group relative overflow-hidden rounded-2xl cursor-text" style={{ aspectRatio: "1.58 / 1" }}>
+      <div
+        className="absolute inset-0 transition-transform duration-300 group-hover:scale-[1.02]"
+        style={{
+          background: "linear-gradient(135deg, oklch(0.96 0.002 260), oklch(0.88 0.004 260))",
+          boxShadow: "0 12px 30px -12px oklch(0 0 0 / 0.5), inset 0 0 0 1px oklch(0 0 0 / 0.08)",
+        }}
+      >
+        {/* Decorative border frame */}
+        <div className="absolute inset-2 rounded-xl border-2 border-black/15 pointer-events-none" />
+        {/* Corner ornaments */}
+        <div className="absolute top-3 left-3 w-6 h-6 rounded-full border-2 border-black/20" />
+        <div className="absolute top-3 right-3 w-6 h-6 rounded-full border-2 border-black/20" />
+        <div className="absolute bottom-3 left-3 w-6 h-6 rounded-full border-2 border-black/20" />
+        <div className="absolute bottom-3 right-3 w-6 h-6 rounded-full border-2 border-black/20" />
+        {/* Central guilloché-like pattern */}
+        <div
+          className="absolute inset-0 opacity-25 pointer-events-none"
+          style={{
+            backgroundImage:
+              "repeating-radial-gradient(circle at 50% 50%, oklch(0 0 0 / 0.04) 0px, oklch(0 0 0 / 0.04) 1px, transparent 1px, transparent 8px)",
+          }}
+        />
+        {/* Content */}
+        <div className="relative h-full flex flex-col justify-between p-4">
+          <div className="flex items-center justify-between">
+            <span className="text-[9px] uppercase tracking-[0.3em] text-black/60 font-display font-bold">Contanti</span>
+            <Wallet className="w-4 h-4 text-black/50" />
+          </div>
+          <div className="flex items-baseline gap-1">
+            <span className="text-black/60 text-sm font-display">€</span>
+            <input
+              type="number"
+              value={value}
+              onChange={(e) => onChange(Number(e.target.value) || 0)}
+              className="w-full bg-transparent text-2xl md:text-3xl font-bold font-display text-black outline-none focus:text-black/80"
+              style={{ textShadow: "0 1px 0 oklch(1 0 0 / 0.5)" }}
+            />
+          </div>
         </div>
       </div>
-    </label>
+    </div>
+  );
+}
+
+function CreditCardInput({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+  return (
+    <div className="group relative overflow-hidden rounded-2xl cursor-text" style={{ aspectRatio: "1.58 / 1" }}>
+      <div
+        className="absolute inset-0 transition-transform duration-300 group-hover:scale-[1.02]"
+        style={{
+          background: "linear-gradient(135deg, oklch(0.12 0.005 260), oklch(0.08 0.003 260))",
+          boxShadow: "0 12px 30px -12px oklch(0 0 0 / 0.7), inset 0 0 0 1px oklch(1 0 0 / 0.08)",
+        }}
+      >
+        {/* Subtle holographic sheen */}
+        <div
+          className="absolute inset-0 opacity-30 pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(135deg, oklch(0.75 0.18 152 / 0.15) 0%, transparent 30%, oklch(0.78 0.15 210 / 0.12) 60%, transparent 80%)",
+          }}
+        />
+        {/* Content */}
+        <div className="relative h-full flex flex-col justify-between p-4">
+          <div className="flex items-start justify-between">
+            <div className="flex flex-col gap-1">
+              {/* EMV chip */}
+              <div
+                className="w-8 h-6 rounded-[3px]"
+                style={{
+                  background: "linear-gradient(135deg, oklch(0.8 0.1 85), oklch(0.7 0.09 85), oklch(0.85 0.08 85))",
+                  boxShadow: "inset 0 0 0 1px oklch(0 0 0 / 0.3)",
+                }}
+              />
+              <span className="text-[9px] uppercase tracking-[0.3em] text-white/70 font-display font-bold mt-1">In banca</span>
+            </div>
+            {/* American Express style logo */}
+            <div className="text-right">
+              <div className="text-[7px] uppercase tracking-[0.2em] text-white/50 font-display">American</div>
+              <div className="text-[10px] uppercase tracking-[0.15em] text-white/90 font-display font-bold leading-tight">Express</div>
+            </div>
+          </div>
+          <div className="flex items-baseline gap-1">
+            <span className="text-white/60 text-sm font-display">€</span>
+            <input
+              type="number"
+              value={value}
+              onChange={(e) => onChange(Number(e.target.value) || 0)}
+              className="w-full bg-transparent text-2xl md:text-3xl font-bold font-display text-white outline-none focus:text-white/90"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
