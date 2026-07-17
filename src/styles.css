@@ -53,9 +53,9 @@
   --primary-glow: oklch(0.42 0.06 160);
   --primary-foreground: oklch(0.98 0.001 260);
 
-/* Deep forest green as secondary accent */
---secondary: oklch(0.28 0.04 160);
---secondary-foreground: oklch(0.98 0.001 260);
+  /* Deep green as secondary accent*/
+  --secondary: oklch(0.28 0.04 160);
+  --secondary-foreground: oklch(0.98 0.001 260);
 
   --muted: oklch(0.21 0.003 260);
   --muted-foreground: oklch(0.78 0.01 260);
