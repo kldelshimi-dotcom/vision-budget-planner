@@ -636,7 +636,14 @@ function MovimentiTab({
                 className={`p-1 rounded-md hover:bg-white/10 ${t.highlight ? "text-highlight" : "text-muted-foreground hover:text-highlight"}`}
                 aria-label="Evidenzia"
               >
-                <Star className={`w-3.5 h-3.5 ${t.highlight ? "fill-current" : ""}`} />
+                <Highlighter className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={() => setEditTx(t)}
+                className="text-muted-foreground hover:text-primary p-1 rounded-md hover:bg-white/10"
+                aria-label="Modifica"
+              >
+                <Pencil className="w-3.5 h-3.5" />
               </button>
               <button onClick={() => setConfirmDelete(t)} className="text-muted-foreground hover:text-destructive p-1 rounded-md hover:bg-destructive/10">
                 <Trash2 className="w-3.5 h-3.5" />
