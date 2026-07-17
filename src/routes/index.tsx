@@ -213,7 +213,7 @@ function Dashboard() {
                   </div>
                 ))}
                 <AddIncomeRow onAdd={addIncome} defaultDate={`${month}-01`} />
-                <div className="flex items-center px-4 py-3 border-t border-white/5" style={{ background: "linear-gradient(90deg, transparent, oklch(0.82 0.17 165 / 0.08))" }}>
+                <div className="flex items-center px-4 py-3 border-t border-white/5" style={{ background: "linear-gradient(90deg, transparent, oklch(0.75 0.18 152 / 0.08))" }}>
                   <span className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Totale</span>
                   <span className="ml-auto font-bold text-primary text-base">{fmt(totalIncome)}</span>
                 </div>
@@ -363,7 +363,7 @@ function Dashboard() {
                   <BarChart data={dailyData} margin={{ top: 10, right: 10, left: -10, bottom: 30 }}>
                     <defs>
                       <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="oklch(0.82 0.17 165)" stopOpacity={1} />
+                        <stop offset="0%" stopColor="oklch(0.75 0.18 152)" stopOpacity={1} />
                         <stop offset="100%" stopColor="oklch(0.78 0.15 210)" stopOpacity={0.7} />
                       </linearGradient>
                     </defs>

@@ -25,7 +25,7 @@ export interface Income {
 }
 
 export const CATEGORIES: Category[] = [
-  { name: "Auto", group: "Necessità", budget: 442, color: "#10E0A0" },
+  { name: "Auto", group: "Necessità", budget: 442, color: "#00C896" },
   { name: "Assicurazione", group: "Necessità", budget: 120, color: "#22D3EE" },
   { name: "Benzina", group: "Necessità", budget: 175, color: "#0EA5E9" },
   { name: "Alimentazione", group: "Necessità", budget: 224, color: "#38BDF8" },
@@ -37,11 +37,11 @@ export const CATEGORIES: Category[] = [
   { name: "Altro", group: "Varie", budget: 25, color: "#FB923C" },
   { name: "Abbonamenti", group: "Varie", budget: 58, color: "#E879F9" },
   { name: "Salute", group: "Spese annuali", budget: 30, color: "#A3E635" },
-  { name: "Vestiti", group: "Spese annuali", budget: 40, color: "#34D399" },
+  { name: "Vestiti", group: "Spese annuali", budget: 40, color: "#00D4A8" },
   { name: "Telefono", group: "Spese annuali", budget: 5, color: "#2DD4BF" },
-  { name: "Risparmi liquidi", group: "Risparmi/Investimenti", budget: 88, color: "#10B981" },
-  { name: "investimenti ETF", group: "Risparmi/Investimenti", budget: 30, color: "#059669" },
-  { name: "Fondo pensione", group: "Risparmi/Investimenti", budget: 16, color: "#06B6D4" },
+  { name: "Risparmi liquidi", group: "Risparmi/Investimenti", budget: 88, color: "#00A878" },
+  { name: "investimenti ETF", group: "Risparmi/Investimenti", budget: 30, color: "#008F60" },
+  { name: "Fondo pensione", group: "Risparmi/Investimenti", budget: 16, color: "#007A52" },
 ];
 
 export const SAMPLE_INCOME: Income[] = [
