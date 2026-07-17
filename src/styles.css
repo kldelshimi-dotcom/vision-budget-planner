@@ -48,10 +48,10 @@
   --popover: oklch(0.08 0.001 260);
   --popover-foreground: oklch(1 0 0);
 
-  /* Jewel emerald #00C896 */
-  --primary: oklch(0.75 0.18 152);
-  --primary-glow: oklch(0.82 0.20 152);
-  --primary-foreground: oklch(0.13 0.002 260);
+  /* Deep forest green #254436 */
+  --primary: oklch(0.35 0.05 160);
+  --primary-glow: oklch(0.42 0.06 160);
+  --primary-foreground: oklch(0.98 0.001 260);
 
   /* Electric cyan #22D3EE as secondary accent */
   --secondary: oklch(0.78 0.15 210);
