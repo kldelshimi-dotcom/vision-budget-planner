@@ -689,6 +689,15 @@ function MovimentiTab({
           </div>
         </div>
       )}
+
+      {editTx && (
+        <EditTransactionModal
+          tx={editTx}
+          categories={categories}
+          onClose={() => setEditTx(null)}
+          onSave={(patch) => { onUpdate(editTx.id, patch); setEditTx(null); }}
+        />
+      )}
     </div>
   );
 }
