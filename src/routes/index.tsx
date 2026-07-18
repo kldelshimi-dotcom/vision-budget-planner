@@ -423,24 +423,24 @@ function BanknoteInput({ value, onChange }: { value: number; onChange: (v: numbe
         className="absolute inset-0 transition-transform duration-300 group-hover:scale-[1.02]"
         style={{
           background:
-            "linear-gradient(145deg, oklch(0.38 0.008 260) 0%, oklch(0.30 0.005 260) 45%, oklch(0.22 0.004 260) 100%)",
+            "linear-gradient(145deg, #2d2d2d 0%, #202020 45%, #151515 100%)",
           boxShadow:
-            "0 14px 34px -12px oklch(0 0 0 / 0.7), inset 0 0 0 1px oklch(1 0 0 / 0.14), inset 0 1px 0 oklch(1 0 0 / 0.10)",
+            "0 14px 34px -12px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.16), inset 0 1px 0 rgba(255,255,255,0.10)",
         }}
       >
         {/* Outer ornamental frame */}
         <div
           className="absolute inset-2 rounded-xl pointer-events-none"
           style={{
-            border: "1.5px solid oklch(0.65 0.01 80 / 0.65)",
-            boxShadow: "inset 0 0 0 1px oklch(0 0 0 / 0.25), 0 0 0 1px oklch(0 0 0 / 0.25)",
+            border: "1.5px solid rgba(180,180,170,0.55)",
+            boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.25)",
           }}
         />
         {/* Inner dashed frame */}
         <div
           className="absolute inset-3 rounded-lg pointer-events-none"
           style={{
-            border: "1px dashed oklch(0.70 0.01 80 / 0.55)",
+            border: "1px dashed rgba(190,190,180,0.45)",
           }}
         />
         {/* Corner rosettes */}
@@ -450,8 +450,8 @@ function BanknoteInput({ value, onChange }: { value: number; onChange: (v: numbe
             className={`absolute ${pos} w-7 h-7 rounded-full pointer-events-none`}
             style={{
               background:
-                "radial-gradient(circle, oklch(0.60 0.01 80 / 0.95) 0%, oklch(0.45 0.008 80 / 0.75) 50%, transparent 72%)",
-              boxShadow: "inset 0 0 0 1px oklch(0.70 0.01 80 / 0.6)",
+                "radial-gradient(circle, rgba(175,175,165,0.95) 0%, rgba(120,120,110,0.75) 50%, transparent 72%)",
+              boxShadow: "inset 0 0 0 1px rgba(190,190,180,0.6)",
             }}
           />
         ))}
@@ -460,7 +460,7 @@ function BanknoteInput({ value, onChange }: { value: number; onChange: (v: numbe
           className="absolute inset-0 opacity-50 pointer-events-none"
           style={{
             backgroundImage:
-              "repeating-linear-gradient(45deg, transparent, transparent 6px, oklch(1 0 0 / 0.05) 6px, oklch(1 0 0 / 0.05) 7px), repeating-linear-gradient(-45deg, transparent, transparent 10px, oklch(1 0 0 / 0.04) 10px, oklch(1 0 0 / 0.04) 11px)",
+              "repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.05) 6px, rgba(255,255,255,0.05) 7px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.04) 10px, rgba(255,255,255,0.04) 11px)",
           }}
         />
         {/* Holographic security strip */}
@@ -468,7 +468,7 @@ function BanknoteInput({ value, onChange }: { value: number; onChange: (v: numbe
           className="absolute top-0 bottom-0 left-[18%] w-2 opacity-60 pointer-events-none"
           style={{
             background:
-              "linear-gradient(180deg, transparent 0%, oklch(0.72 0.12 150 / 0.35) 30%, oklch(0.78 0.1 200 / 0.30) 60%, transparent 100%)",
+              "linear-gradient(180deg, transparent 0%, rgba(110,210,150,0.35) 30%, rgba(130,190,220,0.30) 60%, transparent 100%)",
             filter: "blur(1px)",
           }}
         />
@@ -477,14 +477,14 @@ function BanknoteInput({ value, onChange }: { value: number; onChange: (v: numbe
           <div className="flex items-center justify-between">
             <span
               className="text-[9px] uppercase tracking-[0.3em] font-display font-bold"
-              style={{ color: "oklch(0.88 0.01 80 / 1)" }}
+              style={{ color: "rgba(235,235,230,1)" }}
             >
               Contanti
             </span>
-            <Wallet className="w-4 h-4" style={{ color: "oklch(0.82 0.01 80 / 0.95)" }} />
+            <Wallet className="w-4 h-4" style={{ color: "rgba(215,215,205,0.95)" }} />
           </div>
           <div className="flex items-baseline gap-1">
-            <span className="text-sm font-display" style={{ color: "oklch(0.88 0.01 80 / 0.95)" }}>
+            <span className="text-sm font-display" style={{ color: "rgba(235,235,230,0.95)" }}>
               €
             </span>
             <input
@@ -492,7 +492,7 @@ function BanknoteInput({ value, onChange }: { value: number; onChange: (v: numbe
               value={value}
               onChange={(e) => onChange(Number(e.target.value) || 0)}
               className="w-full bg-transparent text-2xl md:text-3xl font-bold font-display outline-none"
-              style={{ color: "oklch(1 0 0 / 1)", textShadow: "0 1px 3px oklch(0 0 0 / 0.5)" }}
+              style={{ color: "#ffffff", textShadow: "0 1px 3px rgba(0,0,0,0.5)" }}
             />
           </div>
         </div>
