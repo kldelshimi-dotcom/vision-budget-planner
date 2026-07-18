@@ -90,17 +90,17 @@ function Dashboard() {
             <button
               onClick={() => setMonth(shiftMonth(month, -1))}
               aria-label="Mese precedente"
-              className="p-2 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="p-2 rounded-full text-muted-foreground hover:text-white hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
             >
               <ChevronLeft className="w-7 h-7 md:w-8 md:h-8" />
             </button>
-            <h1 className="text-2xl md:text-3xl font-bold text-gradient text-center min-w-[150px] md:min-w-[200px]">
+            <h1 className="text-2xl md:text-3xl font-bold text-white text-center min-w-[150px] md:min-w-[200px]">
               {monthLabel}
             </h1>
             <button
               onClick={() => setMonth(shiftMonth(month, 1))}
               aria-label="Mese successivo"
-              className="p-2 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="p-2 rounded-full text-muted-foreground hover:text-white hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
             >
               <ChevronRight className="w-7 h-7 md:w-8 md:h-8" />
             </button>
@@ -135,14 +135,14 @@ function Dashboard() {
                 <div className="relative">
                   <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Rimanente questo mese</div>
                   <div className="flex items-baseline gap-2 flex-wrap mt-0.5">
-                    <div className="text-3xl md:text-4xl font-bold text-gradient font-display">
+                    <div className="text-3xl md:text-4xl font-bold text-white font-display">
                       {hideAmount ? "€ ••••••••" : fmt(remaining)}
                     </div>
                     <button
                       onClick={() => setHideAmount((v) => !v)}
                       aria-label={hideAmount ? "Mostra saldo" : "Nascondi saldo"}
                       aria-pressed={hideAmount}
-                      className="p-1.5 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      className="p-1.5 rounded-full text-muted-foreground hover:text-white hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
                     >
                       {hideAmount ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -188,14 +188,14 @@ function Dashboard() {
               <div className="glass-card rounded-2xl overflow-hidden">
                 {incomes.map((i) => (
                   <div key={i.id} className="flex items-center gap-3 px-4 py-3 border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors">
-                    <div className="w-8 h-8 rounded-lg bg-primary/15 text-primary flex items-center justify-center text-xs font-bold">
+                    <div className="w-8 h-8 rounded-lg bg-primary/15 text-white flex items-center justify-center text-xs font-bold">
                       +
                     </div>
                     <div className="flex-1">
                       <div className="text-sm font-medium">{i.source}</div>
                       <div className="text-[10px] text-muted-foreground">{i.date}</div>
                     </div>
-                    <div className="font-bold text-primary text-sm">{fmt(i.amount)}</div>
+                    <div className="font-bold text-white text-sm">{fmt(i.amount)}</div>
                     <button onClick={() => deleteIncome(i.id)} className="text-muted-foreground hover:text-destructive p-1 rounded-md hover:bg-destructive/10">
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -204,7 +204,7 @@ function Dashboard() {
                 <AddIncomeRow onAdd={addIncome} defaultDate={`${month}-01`} />
                 <div className="flex items-center px-4 py-3 border-t border-white/5" style={{ background: "linear-gradient(90deg, transparent, oklch(0.75 0.18 152 / 0.08))" }}>
                   <span className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Totale</span>
-                  <span className="ml-auto font-bold text-primary text-base">{fmt(totalIncome)}</span>
+                  <span className="ml-auto font-bold text-white text-base">{fmt(totalIncome)}</span>
                 </div>
               </div>
             </section>
@@ -216,7 +216,7 @@ function Dashboard() {
                 <div className="h-64 relative">
                   <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10">
                     <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Speso</div>
-                    <div className="text-xl font-bold text-gradient">{fmt(totalSpent)}</div>
+                    <div className="text-xl font-bold text-white">{fmt(totalSpent)}</div>
                     <div className="text-[10px] text-muted-foreground mt-0.5">{spentDonutData.length} categorie</div>
                   </div>
                   <ResponsiveContainer>
@@ -277,7 +277,7 @@ function Dashboard() {
                         <div className="flex items-start justify-between mb-2">
                           <div>
                             <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">{g.group}</div>
-                            <div className="text-xl font-bold text-gradient font-display">{fmt(g.budget)}</div>
+                            <div className="text-xl font-bold text-white font-display">{fmt(g.budget)}</div>
                           </div>
                           <div className="text-right flex items-start gap-1.5">
                             <div>
@@ -322,7 +322,7 @@ function Dashboard() {
                                 </div>
                                 <div className="flex items-center justify-between text-[10px] mb-1">
                                   <span className="text-muted-foreground">Rimanente</span>
-                                  <span className={catRemaining < 0 ? "text-destructive font-semibold" : "text-primary font-semibold"}>{fmt(catRemaining)}</span>
+                                  <span className={catRemaining < 0 ? "text-destructive font-semibold" : "text-white font-semibold"}>{fmt(catRemaining)}</span>
                                 </div>
                                 <div className="h-1 bg-white/5 rounded-full overflow-hidden">
                                   <div
@@ -407,7 +407,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 }
 
 function MiniStat({ label, value, tone }: { label: string; value: string; tone?: "primary" | "destructive" }) {
-  const color = tone === "destructive" ? "text-destructive" : tone === "primary" ? "text-primary" : "text-foreground";
+  const color = tone === "destructive" ? "text-destructive" : tone === "primary" ? "text-white" : "text-foreground";
   return (
     <div className="glass-card rounded-2xl p-3">
       <div className="text-[10px] uppercase tracking-widest text-muted-foreground mb-0.5">{label}</div>
@@ -691,7 +691,7 @@ function MovimentiTab({
 
       <section>
         <div className="flex items-center justify-between mb-2 gap-2">
-          <SectionTitle>Movimenti · {sorted.length}{activeFilters > 0 && <span className="text-primary"> (filtrati)</span>}</SectionTitle>
+          <SectionTitle>Movimenti · {sorted.length}{activeFilters > 0 && <span className="text-white"> (filtrati)</span>}</SectionTitle>
           <div className="flex items-center gap-1 bg-white/5 rounded-md px-1.5 py-1">
             <ArrowUpDown className="w-3 h-3 text-muted-foreground" />
             <select
@@ -721,7 +721,7 @@ function MovimentiTab({
           <input type="date" value={filterDate} onChange={(e) => setFilterDate(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none w-[130px]" placeholder="Data" />
           <button
             onClick={() => setFilterHighlighted((v) => !v)}
-            className={`text-[10px] px-2 py-1.5 rounded-md flex items-center gap-1 ${filterHighlighted ? "bg-highlight/30 text-highlight" : "bg-white/5 hover:bg-white/10"}`}
+            className={`text-[10px] px-2 py-1.5 rounded-md flex items-center gap-1 ${filterHighlighted ? "bg-highlight/30 text-white" : "bg-white/5 hover:bg-white/10"}`}
           >
             <Highlighter className={`w-3 h-3 ${filterHighlighted ? "" : ""}`} /> Evidenziati
           </button>
@@ -756,14 +756,14 @@ function MovimentiTab({
               </div>
               <button
                 onClick={() => onUpdate(t.id, { highlight: !t.highlight })}
-                className={`p-1 rounded-md hover:bg-white/10 ${t.highlight ? "text-highlight" : "text-muted-foreground hover:text-highlight"}`}
+                className={`p-1 rounded-md hover:bg-white/10 ${t.highlight ? "text-white" : "text-muted-foreground hover:text-white"}`}
                 aria-label="Evidenzia"
               >
                 <Highlighter className="w-3.5 h-3.5" />
               </button>
               <button
                 onClick={() => setEditTx(t)}
-                className="text-muted-foreground hover:text-primary p-1 rounded-md hover:bg-white/10"
+                className="text-muted-foreground hover:text-white p-1 rounded-md hover:bg-white/10"
                 aria-label="Modifica"
               >
                 <Pencil className="w-3.5 h-3.5" />
@@ -917,7 +917,7 @@ function BudgetTab({
           <div className="h-64 relative">
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10">
               <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Totale</div>
-              <div className="text-xl font-bold text-gradient">{fmt(totalBudget)}</div>
+              <div className="text-xl font-bold text-white">{fmt(totalBudget)}</div>
               <div className="text-[10px] text-muted-foreground mt-0.5">{categories.length} categorie</div>
             </div>
             <ResponsiveContainer>
@@ -966,7 +966,7 @@ function BudgetTab({
             <div className="flex items-end justify-between mb-2">
               <div>
                 <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-0.5">Gruppo</div>
-                <h2 className="text-xl font-bold font-display text-gradient">{g}</h2>
+                <h2 className="text-xl font-bold font-display text-white">{g}</h2>
               </div>
               <div className="text-right">
                 <div className="text-[10px] text-muted-foreground">Speso / Budget</div>
@@ -992,7 +992,7 @@ function BudgetTab({
                       <div className="flex-1 min-w-0">
                         <div className="font-semibold truncate text-sm">{c.name}</div>
                         <div className="text-[10px] text-muted-foreground">
-                          {fmt(s)} spesi · <span className={over ? "text-destructive" : "text-primary"}>{over ? "Sforato" : `${fmt(diff)} rimasti`}</span>
+                          {fmt(s)} spesi · <span className={over ? "text-destructive" : "text-white"}>{over ? "Sforato" : `${fmt(diff)} rimasti`}</span>
                         </div>
                       </div>
                       <div className="flex items-center gap-1 bg-input/50 rounded-lg px-2 py-1">
@@ -1001,7 +1001,7 @@ function BudgetTab({
                           type="number"
                           value={c.budget}
                           onChange={(e) => onUpdate(c.name, Number(e.target.value) || 0)}
-                          className="w-14 bg-transparent text-xs font-bold text-right outline-none focus:text-primary"
+                          className="w-14 bg-transparent text-xs font-bold text-right outline-none focus:text-white"
                         />
                       </div>
                     </div>
