@@ -577,10 +577,10 @@ function AddIncomeRow({ onAdd, defaultDate }: { onAdd: (i: { source: string; amo
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState(defaultDate);
   return (
-    <div className="flex flex-wrap items-center gap-2 px-4 py-3 bg-white/[0.02] border-t border-white/5">
-      <input placeholder="Fonte" value={source} onChange={(e) => setSource(e.target.value)} className="flex-1 min-w-[120px] bg-input/60 rounded-lg px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-white/50" />
-      <input type="number" placeholder="€" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-24 bg-input/60 rounded-lg px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-white/50" />
-      <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="bg-input/60 rounded-lg px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-white/50" />
+    <div className="flex items-center gap-2 px-3 py-2.5 bg-white/[0.02] border-t border-white/5">
+      <input placeholder="Fonte" value={source} onChange={(e) => setSource(e.target.value)} className="flex-1 min-w-0 bg-input/60 rounded-lg px-2.5 py-2 text-xs outline-none focus:ring-2 focus:ring-white/50" />
+      <input type="number" placeholder="€" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-20 bg-input/60 rounded-lg px-2.5 py-2 text-xs outline-none focus:ring-2 focus:ring-white/50" />
+      <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="bg-input/60 rounded-lg px-2 py-2 text-xs outline-none focus:ring-2 focus:ring-white/50" />
       <button
         onClick={() => {
           const n = parseFloat(amount);
@@ -653,9 +653,9 @@ function MovimentiTab({
     <div className="space-y-5 animate-fade-in">
       <section>
         <SectionTitle>Nuovo movimento</SectionTitle>
-        <div className="glass-card rounded-2xl p-2.5 flex flex-wrap gap-1.5 items-center">
-          <div className="flex items-center gap-1.5 bg-input/60 rounded-md px-2 py-1.5">
-            <span className="text-[10px] text-muted-foreground uppercase">{MONTHS_IT[m - 1]} {y}</span>
+        <div className="glass-card rounded-2xl p-2 flex gap-1.5 items-center">
+          <div className="flex items-center gap-1 bg-input/60 rounded-md px-1.5 py-1.5 shrink-0">
+            <span className="text-[9px] text-muted-foreground uppercase">{MONTHS_IT[m - 1].slice(0, 3)} {y}</span>
             <input
               type="number"
               min={1}
@@ -665,12 +665,12 @@ function MovimentiTab({
                 const val = Number(e.target.value) || 1;
                 setDay(Math.min(daysInMonth, Math.max(1, val)));
               }}
-              className="w-10 bg-transparent text-[11px] outline-none focus:ring-1 focus:ring-white/50 text-center"
+              className="w-8 bg-transparent text-[11px] outline-none focus:ring-1 focus:ring-white/50 text-center"
             />
           </div>
-          <input type="number" placeholder="€" value={amount} onChange={(e) => setAmount(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-white/50 w-[70px]" />
-          <input placeholder="Descrizione" value={description} onChange={(e) => setDescription(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-white/50 flex-1 min-w-[100px]" />
-          <select value={category} onChange={(e) => setCategory(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-white/50 flex-1 min-w-[100px]">
+          <input type="number" placeholder="€" value={amount} onChange={(e) => setAmount(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-white/50 w-[52px] shrink-0" />
+          <input placeholder="Descrizione" value={description} onChange={(e) => setDescription(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-white/50 flex-1 min-w-0" />
+          <select value={category} onChange={(e) => setCategory(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-white/50 w-[90px] shrink-0 truncate">
             {categories.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
           <button
@@ -681,10 +681,10 @@ function MovimentiTab({
                 setAmount(""); setDescription("");
               }
             }}
-            className="rounded-md px-2.5 py-1.5 text-[11px] font-bold hover:opacity-90 flex items-center gap-1 shadow-md shadow-white/25"
+            className="rounded-md px-2 py-1.5 text-[11px] font-bold hover:opacity-90 flex items-center gap-1 shadow-md shadow-white/25 shrink-0"
             style={{ background: "oklch(1 0 0)", color: "oklch(0.13 0.002 260)" }}
           >
-            <Plus className="w-3 h-3" /> Aggiungi
+            <Plus className="w-3 h-3" />
           </button>
         </div>
       </section>
@@ -692,7 +692,7 @@ function MovimentiTab({
       <section>
         <div className="flex items-center justify-between mb-2 gap-2">
           <SectionTitle>Movimenti · {sorted.length}{activeFilters > 0 && <span className="text-white"> (filtrati)</span>}</SectionTitle>
-          <div className="flex items-center gap-1 bg-white/5 rounded-md px-1.5 py-1">
+          <div className="flex items-center gap-1 bg-white/5 rounded-md px-1.5 py-1 shrink-0">
             <ArrowUpDown className="w-3 h-3 text-muted-foreground" />
             <select
               value={sortKey}
@@ -713,22 +713,22 @@ function MovimentiTab({
           </div>
         </div>
 
-        <div className="glass-card rounded-2xl p-2.5 mb-2 flex flex-wrap gap-1.5 items-center">
-          <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none flex-1 min-w-[110px]">
+        <div className="glass-card rounded-2xl p-2 mb-2 flex gap-1.5 items-center overflow-x-auto no-scrollbar">
+          <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none w-[120px] shrink-0">
             <option value="">Tutte le categorie</option>
             {categories.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
-          <input type="date" value={filterDate} onChange={(e) => setFilterDate(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none w-[130px]" placeholder="Data" />
+          <input type="date" value={filterDate} onChange={(e) => setFilterDate(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none w-[112px] shrink-0" placeholder="Data" />
           <button
             onClick={() => setFilterHighlighted((v) => !v)}
-            className={`text-[10px] px-2 py-1.5 rounded-md flex items-center gap-1 ${filterHighlighted ? "bg-white/20 text-white" : "bg-white/5 hover:bg-white/10"}`}
+            className={`text-[10px] px-2 py-1.5 rounded-md flex items-center gap-1 shrink-0 ${filterHighlighted ? "bg-white/20 text-white" : "bg-white/5 hover:bg-white/10"}`}
           >
             <Highlighter className={`w-3 h-3 ${filterHighlighted ? "" : ""}`} /> Evidenziati
           </button>
           {activeFilters > 0 && (
             <button
               onClick={() => { setFilterCategory(""); setFilterDate(""); setFilterHighlighted(false); }}
-              className="text-[10px] px-2 py-1.5 rounded-md bg-white/5 hover:bg-destructive/20 flex items-center gap-1 text-muted-foreground"
+              className="text-[10px] px-2 py-1.5 rounded-md bg-white/5 hover:bg-destructive/20 flex items-center gap-1 text-muted-foreground shrink-0"
             >
               <X className="w-3 h-3" /> Reset
             </button>
@@ -739,20 +739,20 @@ function MovimentiTab({
           {sorted.map((t) => (
             <div
               key={t.id}
-              className={`flex items-center gap-2 px-3 py-2 border-b border-white/5 last:border-0 transition-colors ${
+              className={`flex items-center gap-1.5 px-2.5 py-2 border-b border-white/5 last:border-0 transition-colors ${
                 t.highlight ? "bg-white/10 border-l-4 border-l-white" : "hover:bg-white/[0.03]"
               }`}
             >
-              <div className="flex flex-col items-center justify-center w-10 h-10 rounded-lg bg-white/5 flex-shrink-0">
-                <div className="text-[9px] text-muted-foreground uppercase">{t.date.slice(5, 7) === "07" ? "LUG" : t.date.slice(5, 7)}</div>
-                <div className="text-xs font-bold">{t.date.slice(8, 10)}</div>
+              <div className="flex flex-col items-center justify-center w-9 h-9 rounded-lg bg-white/5 flex-shrink-0">
+                <div className="text-[8px] text-muted-foreground uppercase">{t.date.slice(5, 7) === "07" ? "LUG" : t.date.slice(5, 7)}</div>
+                <div className="text-[11px] font-bold leading-none">{t.date.slice(8, 10)}</div>
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-medium truncate text-xs">{t.description || t.category}</div>
-                <span className="inline-block mt-0.5 text-[9px] px-1.5 py-0.5 rounded-full bg-white/5 text-muted-foreground">{t.category}</span>
+                <div className="font-medium truncate text-xs leading-tight">{t.description || t.category}</div>
+                <span className="inline-block mt-0.5 text-[8px] px-1.5 py-0.5 rounded-full bg-white/5 text-muted-foreground truncate max-w-full">{t.category}</span>
               </div>
-              <div className="text-right">
-                <div className="font-bold text-destructive font-display text-xs">−{fmt(t.amount)}</div>
+              <div className="text-right shrink-0">
+                <div className="font-bold text-destructive font-display text-xs whitespace-nowrap">−{fmt(t.amount)}</div>
               </div>
               <button
                 onClick={() => onUpdate(t.id, { highlight: !t.highlight })}
