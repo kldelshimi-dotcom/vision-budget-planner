@@ -486,7 +486,7 @@ function BanknoteInput({ value, onChange }: { value: number; onChange: (v: numbe
           €
         </div>
         {/* Content */}
-        <div className="relative h-full flex flex-col justify-between p-4">
+        <div className="relative h-full flex flex-col p-4">
           <div className="flex items-center justify-between">
             <span
               className="text-[9px] uppercase tracking-[0.3em] font-display font-bold"
@@ -496,17 +496,19 @@ function BanknoteInput({ value, onChange }: { value: number; onChange: (v: numbe
             </span>
             <Wallet className="w-4 h-4" style={{ color: "rgba(225,225,215,1)" }} />
           </div>
-          <div className="flex items-baseline gap-1">
-            <span className="text-sm font-display" style={{ color: "rgba(245,245,240,1)" }}>
-              €
-            </span>
-            <input
-              type="number"
-              value={value}
-              onChange={(e) => onChange(Number(e.target.value) || 0)}
-              className="w-full bg-transparent text-2xl md:text-3xl font-bold font-display outline-none"
-              style={{ color: "#ffffff", textShadow: "0 1px 3px rgba(0,0,0,0.5)" }}
-            />
+          <div className="flex-1 flex items-center justify-center">
+            <div className="flex items-baseline gap-1">
+              <span className="text-sm font-display" style={{ color: "rgba(245,245,240,1)" }}>
+                €
+              </span>
+              <input
+                type="number"
+                value={value}
+                onChange={(e) => onChange(Number(e.target.value) || 0)}
+                className="bg-transparent text-sm md:text-base font-bold font-display outline-none text-center"
+                style={{ color: "#ffffff", textShadow: "0 1px 3px rgba(0,0,0,0.5)", minWidth: "4rem" }}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -533,7 +535,7 @@ function CreditCardInput({ value, onChange }: { value: number; onChange: (v: num
           }}
         />
         {/* Content */}
-        <div className="relative h-full flex flex-col justify-between p-4">
+        <div className="relative h-full flex flex-col p-4">
           <div className="flex items-start justify-between">
             <div className="flex flex-col gap-1">
               {/* EMV chip */}
@@ -552,14 +554,17 @@ function CreditCardInput({ value, onChange }: { value: number; onChange: (v: num
               <div className="text-[10px] uppercase tracking-[0.15em] text-white/90 font-display font-bold leading-tight">Express</div>
             </div>
           </div>
-          <div className="flex items-baseline gap-1">
-            <span className="text-white/60 text-sm font-display">€</span>
-            <input
-              type="number"
-              value={value}
-              onChange={(e) => onChange(Number(e.target.value) || 0)}
-              className="w-full bg-transparent text-2xl md:text-3xl font-bold font-display text-white outline-none focus:text-white/90"
-            />
+          <div className="flex-1 flex items-center justify-center">
+            <div className="flex items-baseline gap-1">
+              <span className="text-white/60 text-sm font-display">€</span>
+              <input
+                type="number"
+                value={value}
+                onChange={(e) => onChange(Number(e.target.value) || 0)}
+                className="bg-transparent text-sm md:text-base font-bold font-display text-white outline-none focus:text-white/90 text-center"
+                style={{ minWidth: "4rem" }}
+              />
+            </div>
           </div>
         </div>
       </div>
