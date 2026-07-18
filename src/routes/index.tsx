@@ -176,19 +176,9 @@ function Dashboard() {
             {/* WALLETS */}
             <section>
               <SectionTitle>Portafoglio</SectionTitle>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <BanknoteInput value={cashOnHand} onChange={(v) => setBalances({ cashOnHand: v })} />
                 <CreditCardInput value={bank} onChange={(v) => setBalances({ bank: v })} />
-              </div>
-
-              <div className="mt-3 glass-card rounded-2xl p-4 flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "var(--gradient-primary)" }}>
-                  <Vault className="w-4 h-4 text-primary-foreground" />
-                </div>
-                <div>
-                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Totale disponibile</div>
-                  <div className="text-xl font-bold text-gradient">{fmt(cashOnHand + bank)}</div>
-                </div>
               </div>
             </section>
 
