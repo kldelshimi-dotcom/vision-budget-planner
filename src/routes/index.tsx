@@ -423,24 +423,24 @@ function BanknoteInput({ value, onChange }: { value: number; onChange: (v: numbe
         className="absolute inset-0 transition-transform duration-300 group-hover:scale-[1.02]"
         style={{
           background:
-            "linear-gradient(145deg, #2d2d2d 0%, #202020 45%, #151515 100%)",
+            "linear-gradient(145deg, #3a3a3a 0%, #2a2a2a 45%, #1c1c1c 100%)",
           boxShadow:
-            "0 14px 34px -12px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.16), inset 0 1px 0 rgba(255,255,255,0.10)",
+            "0 14px 34px -12px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.20), inset 0 1px 0 rgba(255,255,255,0.12)",
         }}
       >
         {/* Outer ornamental frame */}
         <div
           className="absolute inset-2 rounded-xl pointer-events-none"
           style={{
-            border: "1.5px solid rgba(180,180,170,0.55)",
-            boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.25)",
+            border: "1.5px solid rgba(210,210,200,0.70)",
+            boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.20), 0 0 0 1px rgba(0,0,0,0.20)",
           }}
         />
         {/* Inner dashed frame */}
         <div
           className="absolute inset-3 rounded-lg pointer-events-none"
           style={{
-            border: "1px dashed rgba(190,190,180,0.45)",
+            border: "1px dashed rgba(220,220,210,0.55)",
           }}
         />
         {/* Corner rosettes */}
@@ -450,41 +450,54 @@ function BanknoteInput({ value, onChange }: { value: number; onChange: (v: numbe
             className={`absolute ${pos} w-7 h-7 rounded-full pointer-events-none`}
             style={{
               background:
-                "radial-gradient(circle, rgba(175,175,165,0.95) 0%, rgba(120,120,110,0.75) 50%, transparent 72%)",
-              boxShadow: "inset 0 0 0 1px rgba(190,190,180,0.6)",
+                "radial-gradient(circle, rgba(205,205,195,1) 0%, rgba(150,150,140,0.85) 50%, transparent 72%)",
+              boxShadow: "inset 0 0 0 1px rgba(220,220,210,0.7)",
             }}
           />
         ))}
         {/* Guilloché / mesh pattern */}
         <div
-          className="absolute inset-0 opacity-50 pointer-events-none"
+          className="absolute inset-0 opacity-60 pointer-events-none"
           style={{
             backgroundImage:
-              "repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.05) 6px, rgba(255,255,255,0.05) 7px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.04) 10px, rgba(255,255,255,0.04) 11px)",
+              "repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.06) 6px, rgba(255,255,255,0.06) 7px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 11px)",
           }}
         />
         {/* Holographic security strip */}
         <div
-          className="absolute top-0 bottom-0 left-[18%] w-2 opacity-60 pointer-events-none"
+          className="absolute top-0 bottom-0 left-[18%] w-2 opacity-70 pointer-events-none"
           style={{
             background:
-              "linear-gradient(180deg, transparent 0%, rgba(110,210,150,0.35) 30%, rgba(130,190,220,0.30) 60%, transparent 100%)",
+              "linear-gradient(180deg, transparent 0%, rgba(120,230,160,0.40) 30%, rgba(140,210,240,0.35) 60%, transparent 100%)",
             filter: "blur(1px)",
           }}
         />
+        {/* Central watermark */}
+        <div
+          className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          style={{
+            color: "rgba(255,255,255,0.06)",
+            fontSize: "5rem",
+            fontWeight: 700,
+            fontFamily: "var(--font-display), sans-serif",
+            letterSpacing: "-0.05em",
+          }}
+        >
+          €
+        </div>
         {/* Content */}
         <div className="relative h-full flex flex-col justify-between p-4">
           <div className="flex items-center justify-between">
             <span
               className="text-[9px] uppercase tracking-[0.3em] font-display font-bold"
-              style={{ color: "rgba(235,235,230,1)" }}
+              style={{ color: "rgba(245,245,240,1)" }}
             >
               Contanti
             </span>
-            <Wallet className="w-4 h-4" style={{ color: "rgba(215,215,205,0.95)" }} />
+            <Wallet className="w-4 h-4" style={{ color: "rgba(225,225,215,1)" }} />
           </div>
           <div className="flex items-baseline gap-1">
-            <span className="text-sm font-display" style={{ color: "rgba(235,235,230,0.95)" }}>
+            <span className="text-sm font-display" style={{ color: "rgba(245,245,240,1)" }}>
               €
             </span>
             <input
