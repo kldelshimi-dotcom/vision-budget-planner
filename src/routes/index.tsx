@@ -418,66 +418,54 @@ function MiniStat({ label, value, tone }: { label: string; value: string; tone?:
 
 function BanknoteInput({ value, onChange }: { value: number; onChange: (v: number) => void }) {
   return (
-    <div className="group relative overflow-hidden rounded-2xl cursor-text" style={{ aspectRatio: "1.58 / 1" }}>
+    <div className="group relative overflow-hidden rounded-2xl cursor-text transition-transform duration-300 hover:-translate-y-0.5" style={{ aspectRatio: "1.58 / 1" }}>
       <div
-        className="absolute inset-0 transition-transform duration-300 group-hover:scale-[1.02]"
+        className="absolute inset-0"
         style={{
-          background:
-            "linear-gradient(145deg, #3a3a3a 0%, #2a2a2a 45%, #1c1c1c 100%)",
+          background: "linear-gradient(145deg, oklch(0.38 0.012 95) 0%, oklch(0.30 0.008 95) 45%, oklch(0.22 0.005 95) 100%)",
           boxShadow:
-            "0 14px 34px -12px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.20), inset 0 1px 0 rgba(255,255,255,0.12)",
+            "0 16px 38px -14px rgba(0,0,0,0.75), inset 0 0 0 1px rgba(255,255,255,0.22), inset 0 1px 0 rgba(255,255,255,0.14)",
         }}
       >
-        {/* Outer ornamental frame */}
+        {/* Sheen sweep on hover */}
+        <div
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+          style={{
+            background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%)",
+          }}
+        />
+        {/* Ornamental frame */}
         <div
           className="absolute inset-2 rounded-xl pointer-events-none"
           style={{
-            border: "1.5px solid rgba(210,210,200,0.70)",
-            boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.20), 0 0 0 1px rgba(0,0,0,0.20)",
-          }}
-        />
-        {/* Inner dashed frame */}
-        <div
-          className="absolute inset-3 rounded-lg pointer-events-none"
-          style={{
-            border: "1px dashed rgba(220,220,210,0.55)",
+            border: "1px solid rgba(210,210,200,0.55)",
+            boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.18)",
           }}
         />
         {/* Corner rosettes */}
-        {["top-3 left-3", "top-3 right-3", "bottom-3 left-3", "bottom-3 right-3"].map((pos) => (
+        {["top-2.5 left-2.5", "top-2.5 right-2.5", "bottom-2.5 left-2.5", "bottom-2.5 right-2.5"].map((pos) => (
           <div
             key={pos}
-            className={`absolute ${pos} w-7 h-7 rounded-full pointer-events-none`}
+            className={`absolute ${pos} w-6 h-6 rounded-full pointer-events-none`}
             style={{
-              background:
-                "radial-gradient(circle, rgba(205,205,195,1) 0%, rgba(150,150,140,0.85) 50%, transparent 72%)",
-              boxShadow: "inset 0 0 0 1px rgba(220,220,210,0.7)",
+              background: "radial-gradient(circle, rgba(210,210,200,0.9) 0%, rgba(160,160,150,0.7) 50%, transparent 72%)",
             }}
           />
         ))}
-        {/* Guilloché / mesh pattern */}
+        {/* Guilloché mesh */}
         <div
-          className="absolute inset-0 opacity-60 pointer-events-none"
+          className="absolute inset-0 opacity-50 pointer-events-none"
           style={{
             backgroundImage:
-              "repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.06) 6px, rgba(255,255,255,0.06) 7px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 11px)",
+              "repeating-linear-gradient(45deg, transparent, transparent 7px, rgba(255,255,255,0.05) 7px, rgba(255,255,255,0.05) 8px), repeating-linear-gradient(-45deg, transparent, transparent 11px, rgba(255,255,255,0.04) 11px, rgba(255,255,255,0.04) 12px)",
           }}
         />
-        {/* Holographic security strip */}
-        <div
-          className="absolute top-0 bottom-0 left-[18%] w-2 opacity-70 pointer-events-none"
-          style={{
-            background:
-              "linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.18) 30%, rgba(255,255,255,0.12) 60%, transparent 100%)",
-            filter: "blur(1px)",
-          }}
-        />
-        {/* Central watermark */}
+        {/* Watermark € */}
         <div
           className="absolute inset-0 flex items-center justify-center pointer-events-none"
           style={{
-            color: "rgba(255,255,255,0.06)",
-            fontSize: "5rem",
+            color: "rgba(255,255,255,0.05)",
+            fontSize: "4.5rem",
             fontWeight: 700,
             fontFamily: "var(--font-display), sans-serif",
             letterSpacing: "-0.05em",
@@ -486,29 +474,34 @@ function BanknoteInput({ value, onChange }: { value: number; onChange: (v: numbe
           €
         </div>
         {/* Content */}
-        <div className="relative h-full flex flex-col p-4">
+        <div className="relative h-full flex flex-col justify-between p-4">
           <div className="flex items-center justify-between">
             <span
               className="text-[9px] uppercase tracking-[0.3em] font-display font-bold"
-              style={{ color: "rgba(245,245,240,1)" }}
+              style={{ color: "rgba(245,245,240,0.95)" }}
             >
               Contanti
             </span>
-            <Wallet className="w-4 h-4" style={{ color: "rgba(225,225,215,1)" }} />
+            <div className="flex items-center justify-center w-7 h-7 rounded-full" style={{ background: "rgba(255,255,255,0.08)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.15)" }}>
+              <Wallet className="w-3.5 h-3.5" style={{ color: "rgba(230,230,220,0.9)" }} />
+            </div>
           </div>
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex flex-col items-center">
             <div className="flex items-baseline gap-1">
-              <span className="text-sm font-display" style={{ color: "rgba(245,245,240,1)" }}>
+              <span className="text-xs font-display" style={{ color: "rgba(245,245,240,0.7)" }}>
                 €
               </span>
               <input
                 type="number"
                 value={value}
                 onChange={(e) => onChange(Number(e.target.value) || 0)}
-                className="bg-transparent text-sm md:text-base font-bold font-display outline-none text-center"
-                style={{ color: "#ffffff", textShadow: "0 1px 3px rgba(0,0,0,0.5)", minWidth: "4rem" }}
+                className="bg-transparent text-lg md:text-xl font-bold font-display outline-none text-center"
+                style={{ color: "#ffffff", textShadow: "0 1px 4px rgba(0,0,0,0.5)", minWidth: "4rem" }}
               />
             </div>
+            <span className="text-[8px] uppercase tracking-[0.25em] mt-1" style={{ color: "rgba(210,210,200,0.5)" }}>
+              Liquidità disponibile
+            </span>
           </div>
         </div>
       </div>
@@ -518,53 +511,77 @@ function BanknoteInput({ value, onChange }: { value: number; onChange: (v: numbe
 
 function CreditCardInput({ value, onChange }: { value: number; onChange: (v: number) => void }) {
   return (
-    <div className="group relative overflow-hidden rounded-2xl cursor-text" style={{ aspectRatio: "1.58 / 1" }}>
+    <div className="group relative overflow-hidden rounded-2xl cursor-text transition-transform duration-300 hover:-translate-y-0.5" style={{ aspectRatio: "1.58 / 1" }}>
       <div
-        className="absolute inset-0 transition-transform duration-300 group-hover:scale-[1.02]"
+        className="absolute inset-0"
         style={{
-          background: "linear-gradient(135deg, oklch(0.12 0.005 260), oklch(0.08 0.003 260))",
-          boxShadow: "0 12px 30px -12px oklch(0 0 0 / 0.7), inset 0 0 0 1px oklch(1 0 0 / 0.08)",
+          background: "linear-gradient(135deg, oklch(0.20 0.025 245) 0%, oklch(0.14 0.018 250) 50%, oklch(0.10 0.012 255) 100%)",
+          boxShadow:
+            "0 16px 38px -14px rgba(0,0,0,0.75), inset 0 0 0 1px rgba(255,255,255,0.10), inset 0 1px 0 rgba(255,255,255,0.08)",
         }}
       >
-        {/* Subtle holographic sheen */}
+        {/* Sheen sweep on hover */}
         <div
-          className="absolute inset-0 opacity-30 pointer-events-none"
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
           style={{
-            background:
-              "linear-gradient(135deg, oklch(1 0 0 / 0.12) 0%, transparent 30%, oklch(1 0 0 / 0.08) 60%, transparent 80%)",
+            background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.06) 50%, transparent 60%)",
+          }}
+        />
+        {/* Ambient glow */}
+        <div
+          className="absolute -top-12 -right-12 w-40 h-40 rounded-full pointer-events-none"
+          style={{
+            background: "radial-gradient(circle, oklch(0.55 0.12 245 / 0.18), transparent 70%)",
           }}
         />
         {/* Content */}
-        <div className="relative h-full flex flex-col p-4">
+        <div className="relative h-full flex flex-col justify-between p-4">
           <div className="flex items-start justify-between">
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1.5">
               {/* EMV chip */}
               <div
-                className="w-8 h-6 rounded-[3px]"
+                className="w-8 h-6 rounded-[3px] relative overflow-hidden"
                 style={{
-                  background: "linear-gradient(135deg, oklch(0.8 0.1 85), oklch(0.7 0.09 85), oklch(0.85 0.08 85))",
-                  boxShadow: "inset 0 0 0 1px oklch(0 0 0 / 0.3)",
+                  background: "linear-gradient(135deg, oklch(0.82 0.11 85), oklch(0.68 0.09 85), oklch(0.85 0.08 85))",
+                  boxShadow: "inset 0 0 0 1px oklch(0 0 0 / 0.3), inset 0 1px 0 rgba(255,255,255,0.3)",
                 }}
-              />
-              <span className="text-[9px] uppercase tracking-[0.3em] text-white/70 font-display font-bold mt-1">In banca</span>
+              >
+                <div className="absolute inset-[3px] rounded-[1px]" style={{ border: "0.5px solid rgba(0,0,0,0.25)", backgroundImage: "linear-gradient(90deg, transparent 30%, rgba(0,0,0,0.15) 31%, transparent 32%, transparent 60%, rgba(0,0,0,0.15) 61%, transparent 62%)" }} />
+              </div>
+              <span className="text-[9px] uppercase tracking-[0.3em] text-white/70 font-display font-bold mt-0.5">In banca</span>
             </div>
-            {/* American Express style logo */}
-            <div className="text-right">
-              <div className="text-[7px] uppercase tracking-[0.2em] text-white/50 font-display">American</div>
-              <div className="text-[10px] uppercase tracking-[0.15em] text-white/90 font-display font-bold leading-tight">Express</div>
+            {/* Contactless icon */}
+            <div className="flex flex-col items-end gap-1">
+              <div className="flex items-end gap-0.5 h-4">
+                {[0, 1, 2].map((i) => (
+                  <div
+                    key={i}
+                    className="rounded-full"
+                    style={{
+                      width: `${3 + i * 2}px`,
+                      height: `${6 + i * 4}px`,
+                      background: "rgba(255,255,255,0.45)",
+                    }}
+                  />
+                ))}
+              </div>
+              <div className="text-[7px] uppercase tracking-[0.2em] text-white/40 font-display">Conto</div>
             </div>
           </div>
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex flex-col items-center">
             <div className="flex items-baseline gap-1">
-              <span className="text-white/60 text-sm font-display">€</span>
+              <span className="text-white/50 text-xs font-display">€</span>
               <input
                 type="number"
                 value={value}
                 onChange={(e) => onChange(Number(e.target.value) || 0)}
-                className="bg-transparent text-sm md:text-base font-bold font-display text-white outline-none focus:text-white/90 text-center"
-                style={{ minWidth: "4rem" }}
+                className="bg-transparent text-lg md:text-xl font-bold font-display text-white outline-none focus:text-white text-center"
+                style={{ minWidth: "4rem", textShadow: "0 1px 4px rgba(0,0,0,0.4)" }}
               />
             </div>
+            <span className="text-[8px] uppercase tracking-[0.25em] mt-1 text-white/35">
+              Saldo disponibile
+            </span>
           </div>
         </div>
       </div>
