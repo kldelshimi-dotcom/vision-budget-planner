@@ -422,39 +422,77 @@ function BanknoteInput({ value, onChange }: { value: number; onChange: (v: numbe
       <div
         className="absolute inset-0 transition-transform duration-300 group-hover:scale-[1.02]"
         style={{
-          background: "linear-gradient(135deg, oklch(0.96 0.002 260), oklch(0.88 0.004 260))",
-          boxShadow: "0 12px 30px -12px oklch(0 0 0 / 0.5), inset 0 0 0 1px oklch(0 0 0 / 0.08)",
+          background:
+            "linear-gradient(145deg, oklch(0.18 0.005 260) 0%, oklch(0.12 0.003 260) 40%, oklch(0.08 0.002 260) 100%)",
+          boxShadow:
+            "0 14px 34px -12px oklch(0 0 0 / 0.7), inset 0 0 0 1px oklch(1 0 0 / 0.08), inset 0 1px 0 oklch(1 0 0 / 0.06)",
         }}
       >
-        {/* Decorative border frame */}
-        <div className="absolute inset-2 rounded-xl border-2 border-black/15 pointer-events-none" />
-        {/* Corner ornaments */}
-        <div className="absolute top-3 left-3 w-6 h-6 rounded-full border-2 border-black/20" />
-        <div className="absolute top-3 right-3 w-6 h-6 rounded-full border-2 border-black/20" />
-        <div className="absolute bottom-3 left-3 w-6 h-6 rounded-full border-2 border-black/20" />
-        <div className="absolute bottom-3 right-3 w-6 h-6 rounded-full border-2 border-black/20" />
-        {/* Central guilloché-like pattern */}
+        {/* Outer ornamental frame */}
         <div
-          className="absolute inset-0 opacity-25 pointer-events-none"
+          className="absolute inset-2 rounded-xl pointer-events-none"
+          style={{
+            border: "1.5px solid oklch(0.35 0.01 80 / 0.45)",
+            boxShadow: "inset 0 0 0 1px oklch(0 0 0 / 0.4), 0 0 0 1px oklch(0 0 0 / 0.4)",
+          }}
+        />
+        {/* Inner dashed frame */}
+        <div
+          className="absolute inset-3 rounded-lg pointer-events-none"
+          style={{
+            border: "1px dashed oklch(0.45 0.01 80 / 0.35)",
+          }}
+        />
+        {/* Corner rosettes */}
+        {["top-3 left-3", "top-3 right-3", "bottom-3 left-3", "bottom-3 right-3"].map((pos) => (
+          <div
+            key={pos}
+            className={`absolute ${pos} w-7 h-7 rounded-full pointer-events-none`}
+            style={{
+              background:
+                "radial-gradient(circle, oklch(0.28 0.01 80 / 0.7) 0%, oklch(0.18 0.008 80 / 0.5) 50%, transparent 70%)",
+              boxShadow: "inset 0 0 0 1px oklch(0.45 0.01 80 / 0.4)",
+            }}
+          />
+        ))}
+        {/* Guilloché / mesh pattern */}
+        <div
+          className="absolute inset-0 opacity-30 pointer-events-none"
           style={{
             backgroundImage:
-              "repeating-radial-gradient(circle at 50% 50%, oklch(0 0 0 / 0.04) 0px, oklch(0 0 0 / 0.04) 1px, transparent 1px, transparent 8px)",
+              "repeating-linear-gradient(45deg, transparent, transparent 6px, oklch(1 0 0 / 0.03) 6px, oklch(1 0 0 / 0.03) 7px), repeating-linear-gradient(-45deg, transparent, transparent 10px, oklch(1 0 0 / 0.02) 10px, oklch(1 0 0 / 0.02) 11px)",
+          }}
+        />
+        {/* Holographic security strip */}
+        <div
+          className="absolute top-0 bottom-0 left-[18%] w-2 opacity-40 pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(180deg, transparent 0%, oklch(0.65 0.12 150 / 0.25) 30%, oklch(0.7 0.1 200 / 0.2) 60%, transparent 100%)",
+            filter: "blur(1px)",
           }}
         />
         {/* Content */}
         <div className="relative h-full flex flex-col justify-between p-4">
           <div className="flex items-center justify-between">
-            <span className="text-[9px] uppercase tracking-[0.3em] text-black/60 font-display font-bold">Contanti</span>
-            <Wallet className="w-4 h-4 text-black/50" />
+            <span
+              className="text-[9px] uppercase tracking-[0.3em] font-display font-bold"
+              style={{ color: "oklch(0.65 0.01 80 / 0.9)" }}
+            >
+              Contanti
+            </span>
+            <Wallet className="w-4 h-4" style={{ color: "oklch(0.65 0.01 80 / 0.7)" }} />
           </div>
           <div className="flex items-baseline gap-1">
-            <span className="text-black/60 text-sm font-display">€</span>
+            <span className="text-sm font-display" style={{ color: "oklch(0.65 0.01 80 / 0.8)" }}>
+              €
+            </span>
             <input
               type="number"
               value={value}
               onChange={(e) => onChange(Number(e.target.value) || 0)}
-              className="w-full bg-transparent text-2xl md:text-3xl font-bold font-display text-black outline-none focus:text-black/80"
-              style={{ textShadow: "0 1px 0 oklch(1 0 0 / 0.5)" }}
+              className="w-full bg-transparent text-2xl md:text-3xl font-bold font-display outline-none"
+              style={{ color: "oklch(0.95 0 0 / 0.95)", textShadow: "0 1px 2px oklch(0 0 0 / 0.5)" }}
             />
           </div>
         </div>
