@@ -90,7 +90,7 @@ function Dashboard() {
             <button
               onClick={() => setMonth(shiftMonth(month, -1))}
               aria-label="Mese precedente"
-              className="p-2 rounded-full text-muted-foreground hover:text-white hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="p-2 rounded-full text-muted-foreground hover:text-white hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
             >
               <ChevronLeft className="w-7 h-7 md:w-8 md:h-8" />
             </button>
@@ -100,7 +100,7 @@ function Dashboard() {
             <button
               onClick={() => setMonth(shiftMonth(month, 1))}
               aria-label="Mese successivo"
-              className="p-2 rounded-full text-muted-foreground hover:text-white hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="p-2 rounded-full text-muted-foreground hover:text-white hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
             >
               <ChevronRight className="w-7 h-7 md:w-8 md:h-8" />
             </button>
@@ -114,7 +114,7 @@ function Dashboard() {
                 onClick={() => setTab(t)}
                 className={`flex-1 px-3 py-1.5 text-[10px] md:text-xs font-semibold capitalize rounded-full transition-all ${
                   tab === t
-                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
+                    ? "bg-white text-black shadow-lg shadow-white/20"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -131,7 +131,7 @@ function Dashboard() {
             {/* HERO SUMMARY */}
             <section className="animate-fade-in">
               <div className="glass-card rounded-3xl p-4 md:p-6 relative overflow-hidden">
-                <div className="absolute inset-0 opacity-60 pointer-events-none" style={{ background: "var(--gradient-glow)" }} />
+                <div className="absolute inset-0 opacity-40 pointer-events-none" style={{ background: "radial-gradient(circle at 30% 20%, oklch(1 0 0 / 0.12), transparent 60%)" }} />
                 <div className="relative">
                   <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Rimanente questo mese</div>
                   <div className="flex items-baseline gap-2 flex-wrap mt-0.5">
@@ -142,7 +142,7 @@ function Dashboard() {
                       onClick={() => setHideAmount((v) => !v)}
                       aria-label={hideAmount ? "Mostra saldo" : "Nascondi saldo"}
                       aria-pressed={hideAmount}
-                      className="p-1.5 rounded-full text-muted-foreground hover:text-white hover:bg-primary/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      className="p-1.5 rounded-full text-muted-foreground hover:text-white hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
                     >
                       {hideAmount ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -155,7 +155,7 @@ function Dashboard() {
                       className="h-full rounded-full transition-all"
                       style={{
                         width: `${Math.min(100, totalBudget ? (totalSpent / totalBudget) * 100 : 0)}%`,
-                        background: "var(--gradient-primary)",
+                        background: "oklch(1 0 0)",
                       }}
                     />
                   </div>
@@ -188,7 +188,7 @@ function Dashboard() {
               <div className="glass-card rounded-2xl overflow-hidden">
                 {incomes.map((i) => (
                   <div key={i.id} className="flex items-center gap-3 px-4 py-3 border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors">
-                    <div className="w-8 h-8 rounded-lg bg-primary/15 text-white flex items-center justify-center text-xs font-bold">
+                    <div className="w-8 h-8 rounded-lg bg-white/15 text-white flex items-center justify-center text-xs font-bold">
                       +
                     </div>
                     <div className="flex-1">
@@ -202,7 +202,7 @@ function Dashboard() {
                   </div>
                 ))}
                 <AddIncomeRow onAdd={addIncome} defaultDate={`${month}-01`} />
-                <div className="flex items-center px-4 py-3 border-t border-white/5" style={{ background: "linear-gradient(90deg, transparent, oklch(0.75 0.18 152 / 0.08))" }}>
+                <div className="flex items-center px-4 py-3 border-t border-white/5" style={{ background: "linear-gradient(90deg, transparent, oklch(1 0 0 / 0.06))" }}>
                   <span className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Totale</span>
                   <span className="ml-auto font-bold text-white text-base">{fmt(totalIncome)}</span>
                 </div>
@@ -267,7 +267,7 @@ function Dashboard() {
                   const groupCats = categories.filter((c) => c.group === g.group);
                   return (
                     <div key={g.group} className="glass-card rounded-2xl p-4 relative overflow-hidden group">
-                      <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full opacity-10 blur-2xl group-hover:opacity-20 transition-opacity" style={{ background: "var(--gradient-primary)" }} />
+                      <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full opacity-10 blur-2xl group-hover:opacity-20 transition-opacity" style={{ background: "oklch(1 0 0 / 0.2)" }} />
                       <button
                         type="button"
                         onClick={() => toggleGroup(g.group)}
@@ -296,7 +296,7 @@ function Dashboard() {
                             className="h-full rounded-full transition-all"
                             style={{
                               width: `${Math.min(100, pct)}%`,
-                              background: over ? "var(--color-destructive)" : "var(--gradient-primary)",
+                              background: over ? "var(--color-destructive)" : "oklch(1 0 0)",
                             }}
                           />
                         </div>
@@ -400,7 +400,7 @@ function Dashboard() {
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-2 mb-2">
-      <div className="w-0.5 h-4 rounded-full" style={{ background: "var(--gradient-primary)" }} />
+      <div className="w-0.5 h-4 rounded-full" style={{ background: "oklch(1 0 0)" }} />
       <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-foreground/90 font-display">{children}</h2>
     </div>
   );
@@ -468,7 +468,7 @@ function BanknoteInput({ value, onChange }: { value: number; onChange: (v: numbe
           className="absolute top-0 bottom-0 left-[18%] w-2 opacity-70 pointer-events-none"
           style={{
             background:
-              "linear-gradient(180deg, transparent 0%, rgba(120,230,160,0.40) 30%, rgba(140,210,240,0.35) 60%, transparent 100%)",
+              "linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.18) 30%, rgba(255,255,255,0.12) 60%, transparent 100%)",
             filter: "blur(1px)",
           }}
         />
@@ -531,7 +531,7 @@ function CreditCardInput({ value, onChange }: { value: number; onChange: (v: num
           className="absolute inset-0 opacity-30 pointer-events-none"
           style={{
             background:
-              "linear-gradient(135deg, oklch(0.75 0.18 152 / 0.15) 0%, transparent 30%, oklch(0.78 0.15 210 / 0.12) 60%, transparent 80%)",
+              "linear-gradient(135deg, oklch(1 0 0 / 0.12) 0%, transparent 30%, oklch(1 0 0 / 0.08) 60%, transparent 80%)",
           }}
         />
         {/* Content */}
@@ -578,9 +578,9 @@ function AddIncomeRow({ onAdd, defaultDate }: { onAdd: (i: { source: string; amo
   const [date, setDate] = useState(defaultDate);
   return (
     <div className="flex flex-wrap items-center gap-2 px-4 py-3 bg-white/[0.02] border-t border-white/5">
-      <input placeholder="Fonte" value={source} onChange={(e) => setSource(e.target.value)} className="flex-1 min-w-[120px] bg-input/60 rounded-lg px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-primary/50" />
-      <input type="number" placeholder="€" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-24 bg-input/60 rounded-lg px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-primary/50" />
-      <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="bg-input/60 rounded-lg px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-primary/50" />
+      <input placeholder="Fonte" value={source} onChange={(e) => setSource(e.target.value)} className="flex-1 min-w-[120px] bg-input/60 rounded-lg px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-white/50" />
+      <input type="number" placeholder="€" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-24 bg-input/60 rounded-lg px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-white/50" />
+      <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="bg-input/60 rounded-lg px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-white/50" />
       <button
         onClick={() => {
           const n = parseFloat(amount);
@@ -589,8 +589,8 @@ function AddIncomeRow({ onAdd, defaultDate }: { onAdd: (i: { source: string; amo
             setSource(""); setAmount("");
           }
         }}
-        className="rounded-lg p-2 hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
-        style={{ background: "var(--gradient-primary)", color: "var(--color-primary-foreground)" }}
+        className="rounded-lg p-2 hover:opacity-90 transition-opacity shadow-lg shadow-white/20"
+        style={{ background: "oklch(1 0 0)", color: "oklch(0.13 0.002 260)" }}
         aria-label="Aggiungi entrata"
       >
         <Plus className="w-4 h-4" />
@@ -665,12 +665,12 @@ function MovimentiTab({
                 const val = Number(e.target.value) || 1;
                 setDay(Math.min(daysInMonth, Math.max(1, val)));
               }}
-              className="w-10 bg-transparent text-[11px] outline-none focus:ring-1 focus:ring-primary/50 text-center"
+              className="w-10 bg-transparent text-[11px] outline-none focus:ring-1 focus:ring-white/50 text-center"
             />
           </div>
-          <input type="number" placeholder="€" value={amount} onChange={(e) => setAmount(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 w-[70px]" />
-          <input placeholder="Descrizione" value={description} onChange={(e) => setDescription(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 flex-1 min-w-[100px]" />
-          <select value={category} onChange={(e) => setCategory(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 flex-1 min-w-[100px]">
+          <input type="number" placeholder="€" value={amount} onChange={(e) => setAmount(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-white/50 w-[70px]" />
+          <input placeholder="Descrizione" value={description} onChange={(e) => setDescription(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-white/50 flex-1 min-w-[100px]" />
+          <select value={category} onChange={(e) => setCategory(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-white/50 flex-1 min-w-[100px]">
             {categories.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
           <button
@@ -681,8 +681,8 @@ function MovimentiTab({
                 setAmount(""); setDescription("");
               }
             }}
-            className="rounded-md px-2.5 py-1.5 text-[11px] font-bold hover:opacity-90 flex items-center gap-1 shadow-md shadow-primary/25"
-            style={{ background: "var(--gradient-primary)", color: "var(--color-primary-foreground)" }}
+            className="rounded-md px-2.5 py-1.5 text-[11px] font-bold hover:opacity-90 flex items-center gap-1 shadow-md shadow-white/25"
+            style={{ background: "oklch(1 0 0)", color: "oklch(0.13 0.002 260)" }}
           >
             <Plus className="w-3 h-3" /> Aggiungi
           </button>
@@ -721,7 +721,7 @@ function MovimentiTab({
           <input type="date" value={filterDate} onChange={(e) => setFilterDate(e.target.value)} className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none w-[130px]" placeholder="Data" />
           <button
             onClick={() => setFilterHighlighted((v) => !v)}
-            className={`text-[10px] px-2 py-1.5 rounded-md flex items-center gap-1 ${filterHighlighted ? "bg-highlight/30 text-white" : "bg-white/5 hover:bg-white/10"}`}
+            className={`text-[10px] px-2 py-1.5 rounded-md flex items-center gap-1 ${filterHighlighted ? "bg-white/20 text-white" : "bg-white/5 hover:bg-white/10"}`}
           >
             <Highlighter className={`w-3 h-3 ${filterHighlighted ? "" : ""}`} /> Evidenziati
           </button>
@@ -740,7 +740,7 @@ function MovimentiTab({
             <div
               key={t.id}
               className={`flex items-center gap-2 px-3 py-2 border-b border-white/5 last:border-0 transition-colors ${
-                t.highlight ? "bg-highlight/20 border-l-4 border-l-highlight" : "hover:bg-white/[0.03]"
+                t.highlight ? "bg-white/10 border-l-4 border-l-white" : "hover:bg-white/[0.03]"
               }`}
             >
               <div className="flex flex-col items-center justify-center w-10 h-10 rounded-lg bg-white/5 flex-shrink-0">
@@ -854,26 +854,26 @@ function EditTransactionModal({
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 flex-1"
+              className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-white/50 flex-1"
             />
             <input
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 w-[90px]"
+              className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-white/50 w-[90px]"
               placeholder="€"
             />
           </div>
           <input
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 w-full"
+            className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-white/50 w-full"
             placeholder="Descrizione"
           />
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-primary/50 w-full"
+            className="bg-input/60 rounded-md px-2 py-1.5 text-[11px] outline-none focus:ring-1 focus:ring-white/50 w-full"
           >
             {categories.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
@@ -888,8 +888,8 @@ function EditTransactionModal({
               if (!isFinite(n) || n <= 0) return;
               onSave({ amount: n, description, category, date });
             }}
-            className="px-3 py-1.5 rounded-md text-xs font-bold hover:opacity-90 flex items-center gap-1 shadow-md shadow-primary/25"
-            style={{ background: "var(--gradient-primary)", color: "var(--color-primary-foreground)" }}
+            className="px-3 py-1.5 rounded-md text-xs font-bold hover:opacity-90 flex items-center gap-1 shadow-md shadow-white/25"
+            style={{ background: "oklch(1 0 0)", color: "oklch(0.13 0.002 260)" }}
           >
             <Check className="w-3 h-3" /> Salva
           </button>
@@ -978,7 +978,7 @@ function BudgetTab({
             </div>
             <div className="glass-card rounded-2xl overflow-hidden">
               <div className="h-1 bg-white/5">
-                <div className="h-full transition-all" style={{ width: `${Math.min(100, groupPct)}%`, background: "var(--gradient-primary)" }} />
+                <div className="h-full transition-all" style={{ width: `${Math.min(100, groupPct)}%`, background: "oklch(0.85 0 0)" }} />
               </div>
               {cats.map((c) => {
                 const s = spentByCat.get(c.name) ?? 0;
@@ -1010,7 +1010,7 @@ function BudgetTab({
                         className="h-full rounded-full transition-all"
                         style={{
                           width: `${pct}%`,
-                          background: over ? "var(--color-destructive)" : "var(--gradient-primary)",
+                          background: over ? "var(--color-destructive)" : "oklch(1 0 0)",
                         }}
                       />
                     </div>
