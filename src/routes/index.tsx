@@ -344,64 +344,68 @@ function Dashboard() {
             </section>
 
             {/* DAILY CHART */}
-            <section>
-              <SectionTitle>Spese giornaliere</SectionTitle>
-              <div className="glass-card rounded-2xl p-4 h-80 md:h-96 relative overflow-hidden">
+            <section className="mx-[-1rem] md:mx-0">
+              <div className="px-4 md:px-0">
+                <SectionTitle>Spese giornaliere</SectionTitle>
+              </div>
+              <div className="glass-card rounded-none md:rounded-2xl p-2 md:p-3 h-80 md:h-96 relative overflow-hidden">
                 <div
-                  className="absolute inset-0 pointer-events-none opacity-30"
+                  className="absolute inset-0 pointer-events-none opacity-40"
                   style={{
-                    background: "radial-gradient(circle at 50% 0%, oklch(0.75 0.22 145 / 0.15), transparent 60%)",
+                    background: "radial-gradient(circle at 50% 0%, rgba(31, 95, 68, 0.22), transparent 60%)",
                   }}
                 />
                 <ResponsiveContainer>
-                  <BarChart data={dailyData} margin={{ top: 16, right: 10, left: -10, bottom: 30 }}>
+                  <BarChart data={dailyData} margin={{ top: 6, right: 4, left: -18, bottom: 22 }} barCategoryGap="12%">
                     <defs>
                       <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="oklch(0.82 0.24 145)" stopOpacity={1} />
-                        <stop offset="55%" stopColor="oklch(0.68 0.20 150)" stopOpacity={0.95} />
-                        <stop offset="100%" stopColor="oklch(0.52 0.16 155)" stopOpacity={0.85} />
+                        <stop offset="0%" stopColor="#3d8f6b" stopOpacity={1} />
+                        <stop offset="45%" stopColor="#1f5f44" stopOpacity={0.98} />
+                        <stop offset="100%" stopColor="#0f3d2d" stopOpacity={0.92} />
                       </linearGradient>
                       <filter id="barGlow" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
                         <feMerge>
                           <feMergeNode in="coloredBlur" />
                           <feMergeNode in="SourceGraphic" />
                         </feMerge>
                       </filter>
                     </defs>
-                    <CartesianGrid stroke="oklch(1 0 0 / 0.06)" vertical={false} strokeDasharray="3 6" />
+                    <CartesianGrid stroke="oklch(1 0 0 / 0.05)" vertical={false} strokeDasharray="3 6" />
                     <XAxis
                       dataKey="day"
-                      tick={{ fill: "oklch(0.85 0.01 260)", fontSize: 10, fontWeight: 600 }}
-                      angle={-45}
+                      tick={{ fill: "oklch(0.82 0.01 260)", fontSize: 9, fontWeight: 600 }}
+                      angle={-35}
                       textAnchor="end"
-                      interval={1}
+                      minTickGap={4}
                       axisLine={false}
                       tickLine={false}
+                      height={36}
                     />
                     <YAxis
-                      tick={{ fill: "oklch(0.85 0.01 260)", fontSize: 10, fontWeight: 600 }}
-                      tickFormatter={(v) => `€${v}`}
+                      tick={{ fill: "oklch(0.82 0.01 260)", fontSize: 9, fontWeight: 600 }}
                       axisLine={false}
                       tickLine={false}
+                      width={42}
+                      interval={0}
                     />
                     <Tooltip
-                      cursor={{ fill: "oklch(1 0 0 / 0.08)" }}
+                      cursor={{ fill: "oklch(1 0 0 / 0.06)" }}
                       contentStyle={{
-                        background: "oklch(0.16 0.02 150 / 0.95)",
-                        border: "1px solid oklch(0.75 0.22 145 / 0.45)",
+                        background: "oklch(0.14 0.02 150 / 0.96)",
+                        border: "1px solid rgba(61, 143, 107, 0.55)",
                         borderRadius: 14,
                         backdropFilter: "blur(12px)",
-                        boxShadow: "0 12px 40px -12px oklch(0.75 0.22 145 / 0.35)",
+                        boxShadow: "0 12px 40px -12px rgba(15, 61, 45, 0.45)",
                       }}
                       labelStyle={{ color: "oklch(0.85 0.01 260)", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em" }}
-                      itemStyle={{ color: "oklch(0.82 0.24 145)", fontSize: 13, fontWeight: 700 }}
+                      itemStyle={{ color: "#4ca37d", fontSize: 13, fontWeight: 700 }}
                       formatter={(v: number) => [fmt(v), "Speso"]}
                     />
                     <Bar
                       dataKey="amount"
                       fill="url(#barGrad)"
-                      radius={[6, 6, 0, 0]}
+                      radius={[4, 4, 0, 0]}
                       filter="url(#barGlow)"
                       animationDuration={900}
                     />
