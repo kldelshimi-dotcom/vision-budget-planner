@@ -377,7 +377,6 @@ function Dashboard() {
                       tick={{ fill: "oklch(0.82 0.01 260)", fontSize: 9, fontWeight: 600 }}
                       angle={-35}
                       textAnchor="end"
-                      interval="auto"
                       minTickGap={4}
                       axisLine={false}
                       tickLine={false}
