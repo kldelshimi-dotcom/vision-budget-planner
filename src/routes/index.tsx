@@ -386,7 +386,8 @@ function Dashboard() {
                       tick={{ fill: "oklch(0.82 0.01 260)", fontSize: 9, fontWeight: 600 }}
                       axisLine={false}
                       tickLine={false}
-                      width={28}
+                      width={42}
+                      interval={0}
                     />
                     <Tooltip
                       cursor={{ fill: "oklch(1 0 0 / 0.06)" }}
