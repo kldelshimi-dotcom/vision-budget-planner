@@ -384,10 +384,9 @@ function Dashboard() {
                     />
                     <YAxis
                       tick={{ fill: "oklch(0.82 0.01 260)", fontSize: 9, fontWeight: 600 }}
-                      tickFormatter={(v) => `€${v}`}
                       axisLine={false}
                       tickLine={false}
-                      width={40}
+                      width={28}
                     />
                     <Tooltip
                       cursor={{ fill: "oklch(1 0 0 / 0.06)" }}
