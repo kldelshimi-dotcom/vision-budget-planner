@@ -387,7 +387,7 @@ function Dashboard() {
                       tickFormatter={(v) => `€${v}`}
                       axisLine={false}
                       tickLine={false}
-                      width={34}
+                      width={40}
                     />
                     <Tooltip
                       cursor={{ fill: "oklch(1 0 0 / 0.06)" }}
