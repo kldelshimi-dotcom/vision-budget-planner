@@ -166,10 +166,9 @@ function Dashboard() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-2 mt-3">
-                <MiniStat label="Budget" value={fmt(totalBudget)} />
-                <MiniStat label="Speso" value={fmt(totalSpent)} tone="destructive" />
+              <div className="grid grid-cols-2 gap-2 mt-3">
                 <MiniStat label="Entrate" value={fmt(totalIncome)} tone="primary" />
+                <MiniStat label="Risparmio previsto" value={fmt(totalSpent)}tone="destructive" />
               </div>
             </section>
 
