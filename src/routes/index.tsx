@@ -352,7 +352,7 @@ function Dashboard() {
                 <div
                   className="absolute inset-0 pointer-events-none opacity-40"
                   style={{
-                    background: "radial-gradient(circle at 50% 0%, #1f5f44 / 0.22, transparent 60%)",
+                    background: "radial-gradient(circle at 50% 0%, rgba(31, 95, 68, 0.22), transparent 60%)",
                   }}
                 />
                 <ResponsiveContainer>
