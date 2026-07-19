@@ -393,10 +393,10 @@ function Dashboard() {
                       cursor={{ fill: "oklch(1 0 0 / 0.06)" }}
                       contentStyle={{
                         background: "oklch(0.14 0.02 150 / 0.96)",
-                        border: "1px solid #3d8f6b / 0.55",
+                        border: "1px solid rgba(61, 143, 107, 0.55)",
                         borderRadius: 14,
                         backdropFilter: "blur(12px)",
-                        boxShadow: "0 12px 40px -12px #0f3d2d / 0.45",
+                        boxShadow: "0 12px 40px -12px rgba(15, 61, 45, 0.45)",
                       }}
                       labelStyle={{ color: "oklch(0.85 0.01 260)", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em" }}
                       itemStyle={{ color: "#4ca37d", fontSize: 13, fontWeight: 700 }}
