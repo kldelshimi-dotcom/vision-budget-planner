@@ -106,7 +106,7 @@ function Dashboard() {
             </button>
           </div>
         </div>
-        <nav className="max-w-6xl mx-auto px-4 pb-2">
+        <nav className="max-w-6xl mx-auto px-4 pb-1">
           <div className="glass-card rounded-full p-1 flex gap-1">
             {(["panoramica", "movimenti", "budget"] as const).map((t) => (
               <button
@@ -125,7 +125,7 @@ function Dashboard() {
         </nav>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-4 space-y-6">
+      <main className="max-w-6xl mx-auto px-4 pt-1 pb-4 space-y-4">
         {tab === "panoramica" && (
           <>
             {/* HERO SUMMARY */}
