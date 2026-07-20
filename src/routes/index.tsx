@@ -130,7 +130,7 @@ function Dashboard() {
           <>
             {/* HERO SUMMARY */}
             <section className="animate-fade-in">
-              <div className="glass-card rounded-2xl px-4 py-3 relative overflow-hidden">
+              <div className="glass-card rounded-2xl px-4 py-2.5 relative overflow-hidden">
                 <div className="absolute inset-0 opacity-40 pointer-events-none" style={{ background: "radial-gradient(circle at 30% 20%, oklch(1 0 0 / 0.12), transparent 60%)" }} />
                 <div className="relative">
                   <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Rimanente questo mese</div>
